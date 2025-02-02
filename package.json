@@ -1,0 +1,89 @@
+{
+  "name": "MaterialFlow",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js/postgres": "^1.10.4",
+    "@sap/cds": "^7",
+    "@sap/cds-dk": "^8.5.0",
+    "@sap/hana-client": "^2.22.32",
+    "axios": "^1.7.9",
+    "express": "^4",
+    "@sap/xssec": "^4",
+    "@sap/xsenv": "^3.0.0"
+  },
+  "devDependencies": {
+    "@sap/cds-dk": "^8",
+    "@sap/ux-specification": "^1.124.7",
+    "sqlite3": "^5.0.4"
+  },
+  "scripts": {
+    "start": "cds run",
+    "watch-access_menu": "cds watch --open access_menu/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-materials": "cds watch --open materials/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-suppliers": "cds watch --open suppliers/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-accessmenu": "cds watch --open accessmenu/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "postgres",
+        "impl": "@cap-js/postgres",
+        "credentials": {
+          "host": "localhost",
+          "port": 5432,
+          "user": "root",
+          "password": "migue",
+          "database": "MATERIALFLOW"
+        }
+      },
+      "auth":{
+        "strategy": "mocked",
+        "users": {
+          "admin": {
+            "password": "admin",
+            "roles": ["MaterialFlow.Read", "MaterialFlow.Write"]
+          }
+        }
+      }
+    }
+  },
+  "engines": {
+    "node": "^16.15"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "es2020": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
+    },
+    "globals": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true,
+      "DELETE": true,
+      "CREATE": true,
+      "DROP": true,
+      "CDL": true,
+      "CQL": true,
+      "CXL": true,
+      "cds": true
+    },
+    "rules": {
+      "no-console": "off",
+      "require-atomic-updates": "off"
+    }
+  },
+  "sapux": [
+    "app/materials",
+    "app/categories",
+    "app/suppliers",
+    "app/materials"
+  ]
+}

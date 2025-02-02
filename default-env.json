@@ -1,0 +1,20 @@
+{
+    "VCAP_SERVICES": {
+      "xsuaa": [
+        {
+          "name": "materialflow-uaa",
+          "label": "xsuaa",
+          "tags": [
+            "xsuaa"
+          ],
+          "plan": "application",
+          "credentials": {
+            "clientid": "your-client-id",
+            "clientsecret": "your-client-secret",
+            "url": "https://your-xsuaa-url",
+            "xsappname": "materialflow"
+          }
+        }
+      ]
+    }
+  }

@@ -1,0 +1,11 @@
+ID,name,description,quantity,unitPrice,category_ID,supplier_ID
+d5566b5a-03ac-4e4d-9133-a1003bcc1357,Material-1,Description for Material-1,736,73.86,036a2a10-34c5-4e13-861f-a77f848d3538,5c7a22f3-1edb-48de-b805-995e27c97af5
+828e6aaa-b137-4165-a89d-c5361f4dbbda,Material-2,Description for Material-2,521,65.66,22740896-5c26-46a9-bd13-ee403c0aa6a9,5c7a22f3-1edb-48de-b805-995e27c97af5
+e675e1e1-328e-4164-b0cb-1f4be65b5b01,Material-3,Description for Material-3,157,44.44,22740896-5c26-46a9-bd13-ee403c0aa6a9,b1642208-a7cd-4389-baec-31bacbcb6d91
+d478b5c3-9b0d-4d37-9d52-b87422f84f94,Material-4,Description for Material-4,382,29.84,22740896-5c26-46a9-bd13-ee403c0aa6a9,ea9a85b3-f5b9-40a6-9283-4f19ce674572
+73565200-4b49-48be-b070-5274bd6fc9c4,Material-5,Description for Material-5,642,67.25,22740896-5c26-46a9-bd13-ee403c0aa6a9,ea9a85b3-f5b9-40a6-9283-4f19ce674572
+2c726b73-e001-4f7a-b3c2-6fcf17d52626,Material-6,Description for Material-6,404,18.09,3736f223-bc10-4b38-b71c-d942b5dde776,9af56131-6005-4a3c-960a-8c6cb1cf6b27
+a76b5323-ab56-4182-9b97-9524dd6cc766,Material-7,Description for Material-7,990,18.59,22740896-5c26-46a9-bd13-ee403c0aa6a9,9af56131-6005-4a3c-960a-8c6cb1cf6b27
+b72fa802-bf66-405f-8cff-44de6c425b30,Material-8,Description for Material-8,835,28.71,300ab35f-6b2e-413d-8826-8de8102c537d,5c7a22f3-1edb-48de-b805-995e27c97af5
+d06c4480-a613-495b-b06e-1599c50c4cd6,Material-9,Description for Material-9,848,43.98,3736f223-bc10-4b38-b71c-d942b5dde776,9af56131-6005-4a3c-960a-8c6cb1cf6b27
+b930cae0-78b3-4100-bea3-519c6e06b1ea,Material-10,Description for Material-10,752,36.51,036a2a10-34c5-4e13-861f-a77f848d3538,5c7a22f3-1edb-48de-b805-995e27c97af5

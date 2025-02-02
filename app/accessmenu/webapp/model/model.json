@@ -1,0 +1,20 @@
+{
+	"selectedKey": "page2",
+	"navigation": [
+		{
+			"title": "Materials",
+			"icon": "sap-icon://dimension",
+			"key": "page1"
+		},
+        {
+			"title": "Suppliers",
+			"icon": "sap-icon://supplier",
+			"key": "page2"
+		},
+        {
+			"title": "Categories",
+			"icon": "sap-icon://group",
+			"key": "page3"
+		}
+	]
+}

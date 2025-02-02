@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="MFlowService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Materials" EntityType="MFlowService.Materials">
+                    <NavigationPropertyBinding Path="category" Target="Categories"/>
+                    <NavigationPropertyBinding Path="supplier" Target="Suppliers"/>
+                </EntitySet>
+                <EntitySet Name="Categories" EntityType="MFlowService.Categories"/>
+                <EntitySet Name="Suppliers" EntityType="MFlowService.Suppliers"/>
+                <ActionImport Name="adjustStock" Action="MFlowService.adjustStock" EntitySet="Materials"/>
+                <ActionImport Name="calculateTotalValue" Action="MFlowService.calculateTotalValue"/>
+                <ActionImport Name="addMaterial" Action="MFlowService.addMaterial"/>
+                <ActionImport Name="updateMaterialPrice" Action="MFlowService.updateMaterialPrice"/>
+                <ActionImport Name="deleteMaterial" Action="MFlowService.deleteMaterial"/>
+                <ActionImport Name="getSupplierMaterials" Action="MFlowService.getSupplierMaterials" EntitySet="Materials"/>
+            </EntityContainer>
+            <EntityType Name="Materials">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="100"/>
+                <Property Name="description" Type="Edm.String" MaxLength="255"/>
+                <Property Name="quantity" Type="Edm.Int32"/>
+                <Property Name="unitPrice" Type="Edm.Decimal" Scale="2" Precision="10"/>
+                <NavigationProperty Name="category" Type="MFlowService.Categories">
+                    <ReferentialConstraint Property="category_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="category_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="supplier" Type="MFlowService.Suppliers">
+                    <ReferentialConstraint Property="supplier_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="supplier_ID" Type="Edm.Guid"/>
+            </EntityType>
+            <EntityType Name="Categories">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="50"/>
+            </EntityType>
+            <EntityType Name="Suppliers">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="100"/>
+                <Property Name="contactEmail" Type="Edm.String"/>
+            </EntityType>
+            <Action Name="adjustStock" IsBound="false">
+                <Parameter Name="materialID" Type="Edm.Guid"/>
+                <Parameter Name="adjustment" Type="Edm.Int32"/>
+                <ReturnType Type="MFlowService.Materials"/>
+            </Action>
+            <Action Name="calculateTotalValue" IsBound="false">
+                <Parameter Name="materialID" Type="Edm.Guid"/>
+                <ReturnType Type="Edm.Decimal" Scale="2" Precision="10"/>
+            </Action>
+            <Action Name="addMaterial" IsBound="false">
+                <Parameter Name="name" Type="Edm.String" MaxLength="100"/>
+                <Parameter Name="description" Type="Edm.String" MaxLength="255"/>
+                <Parameter Name="quantity" Type="Edm.Int32"/>
+                <Parameter Name="unitPrice" Type="Edm.Decimal" Scale="2" Precision="10"/>
+                <Parameter Name="categoryID" Type="Edm.Guid"/>
+                <Parameter Name="supplierID" Type="Edm.Guid"/>
+                <ReturnType Type="Edm.Guid"/>
+            </Action>
+            <Action Name="updateMaterialPrice" IsBound="false">
+                <Parameter Name="materialID" Type="Edm.Guid"/>
+                <Parameter Name="newPrice" Type="Edm.Decimal" Scale="2" Precision="10"/>
+                <ReturnType Type="Edm.Boolean"/>
+            </Action>
+            <Action Name="deleteMaterial" IsBound="false">
+                <Parameter Name="materialID" Type="Edm.Guid"/>
+                <ReturnType Type="Edm.Boolean"/>
+            </Action>
+            <Action Name="getSupplierMaterials" IsBound="false">
+                <Parameter Name="supplierID" Type="Edm.Guid"/>
+                <ReturnType Type="Collection(MFlowService.Materials)" Nullable="false"/>
+            </Action>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
