@@ -101,6 +101,7 @@
         "MaterialsList": {
           "type": "Component",
           "id": "MaterialsList",
+          "viewLevel": 1,
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
@@ -122,13 +123,6 @@
                       "enabled": true,
                       "requiresSelection": true,
                       "text": "Adjust Stock"
-                    },
-                    "SupplierMaterialChange": {
-                      "press": "materials.ext.materialsExt.MaterialsExt.OnSupplierMaterialChange",
-                      "visible": true,
-                      "enabled": true,
-                      "requiresSelection": true,
-                      "text": "Supplier Change"
                     }
                   }
                 }
@@ -139,15 +133,30 @@
         "MaterialsObjectPage": {
           "type": "Component",
           "id": "MaterialsObjectPage",
+          "viewLevel": 2,
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Materials"
+              "contextPath": "/Materials",
+              "editable": true
+            }
+          }
+        }
+      },
+      "extends": {
+      "extensions": {
+        "sap.ui.viewExtensions": {
+          "sap.suite.ui.generic.template.ObjectPage.view.Details": {
+            "HeaderActions": {
+              "className": "sap.ui.core.Fragment",
+              "fragmentName": "materials.ext.ObjectPageHeaderActions",
+              "type": "XML"
             }
           }
         }
       }
+    }
     }
   },
   "sap.fiori": {
