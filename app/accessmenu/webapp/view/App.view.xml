@@ -6,13 +6,12 @@
     xmlns:tnt="sap.tnt">
 <tnt:ToolPage id="page">
 		<tnt:header>
-			<f:ShellBar id="_IDGenShellBar1" title="{i18n>title}"
+			<f:ShellBar id="_IDGenShellBar1"
 				showMenuButton="true"
-				homeIcon="./resources/sap/ui/documentation/sdk/images/logo_sap.png"
 				showCopilot="true"
 				showNotifications="true"
-				menuButtonPressed="onMenuButtonPress"
-				notificationsNumber="2">
+				notificationsPressed="onShowNotifications"
+				menuButtonPressed="onMenuButtonPress">
 				<f:menu>
 					<Menu id="_IDGenMenu">
 						<MenuItem id="_IDGenMenuItem" text="Flight booking" icon="sap-icon://flight" />
@@ -43,6 +42,12 @@
 					</ScrollContainer>
 					<ScrollContainer id="page3" horizontal="false" vertical="true" height="100%">
 						<core:ComponentContainer id="pageCategories" name="categories" async="true" manifest="true" component="categories" height="1080px" width="100%"></core:ComponentContainer>
+					</ScrollContainer>
+					<ScrollContainer id="page4" horizontal="false" vertical="true" height="100%">
+						<core:ComponentContainer id="pagePurchaseOrder" name="purchaseorder" async="true" manifest="true" component="purchaseorder" height="1080px" width="100%"></core:ComponentContainer>
+					</ScrollContainer>
+					<ScrollContainer id="page5" horizontal="false" vertical="true" height="100%">
+						<core:ComponentContainer id="pageinventoryMovement" name="inventorymovement" async="true" manifest="true" component="inventorymovement" height="1080px" width="100%"></core:ComponentContainer>
 					</ScrollContainer>
 				</pages>
 			</NavContainer>

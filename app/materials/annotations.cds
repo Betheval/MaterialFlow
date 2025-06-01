@@ -1,5 +1,6 @@
 using MFlowService as service from '../../srv/service';
 
+// Value Help para Categoría
 annotate service.Materials with {
     category @Common.ValueList : {
         $Type : 'Common.ValueListType',
@@ -17,6 +18,8 @@ annotate service.Materials with {
         ],
     }
 };
+
+// Value Help para Proveedor
 annotate service.Materials with {
     supplier @Common.ValueList : {
         $Type : 'Common.ValueListType',
@@ -38,38 +41,53 @@ annotate service.Materials with {
         ],
     }
 };
+
+// Habilitar operaciones CRUD estándar
+annotate service.Materials with @(Capabilities.Insertable : true, Capabilities.Updatable : true, Capabilities.Deletable : true);
+
+// FieldGroup y Facet para ObjectPage editable
 annotate service.Materials with @(
-    UI.FieldGroup #GeneratedGroup1 : {
+    UI.FieldGroup #General : {
         $Type : 'UI.FieldGroupType',
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'name',
+                Label : 'Name',
                 Value : name,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'description',
+                Label : 'Description',
                 Value : description,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'quantity',
+                Label : 'Quantity',
                 Value : quantity,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'unitPrice',
+                Label : 'Unit Price',
                 Value : unitPrice,
+            },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Category',
+                Value : category_ID,
+            },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Supplier',
+                Value : supplier_ID,
             },
         ],
     },
     UI.Facets : [
         {
             $Type : 'UI.ReferenceFacet',
-            ID : 'GeneratedFacet1',
+            ID : 'GeneralInfo',
             Label : 'General Information',
-            Target : '@UI.FieldGroup#GeneratedGroup1',
+            Target : '@UI.FieldGroup#General',
         },
-    ]
+    ],
 );

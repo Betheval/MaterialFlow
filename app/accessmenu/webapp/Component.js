@@ -36,6 +36,8 @@ sap.ui.define([
                             "materials": "/materials/webapp",
                             "suppliers":"/suppliers/webapp",
                             "categories":"/categories/webapp",
+                            "purchaseorder":"/purchaseorder/webapp",
+                            "inventorymovement":"/inventorymovement/webapp"
                         }
                     })
                 }
