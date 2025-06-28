@@ -14,12 +14,13 @@
     "@sap/xsenv": "^3.0.0",
     "@sap/xssec": "^4",
     "axios": "^1.7.9",
+    "chai": "^5.2.0",
     "express": "^4"
   },
   "devDependencies": {
     "@cap-js/cds-typer": "^0.34.0",
     "@sap/cds-dk": "^8",
-    "@sap/ux-specification": "^1.124.16",
+    "@sap/ux-specification": "^1.124.17",
     "@types/node": "^22.15.18",
     "sqlite3": "^5.0.4",
     "ts-node": "^10.9.2",
@@ -30,7 +31,8 @@
     "start": "cds run",
     "watch": "tsc -w",
     "start:ts": "cds-ts watch",
-    "watch-purchaseorder": "cds watch --open purchaseorder/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-purchaseorder": "cds watch --open purchaseorder/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-inventorymovement": "cds watch --open inventorymovement/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -94,6 +96,7 @@
     "app/materials",
     "app/purchaseorder",
     "app/purchaseorder",
-    "app/purchaseorder"
+    "app/purchaseorder",
+    "app/inventorymovement"
   ]
 }

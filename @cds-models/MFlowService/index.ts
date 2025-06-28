@@ -154,6 +154,9 @@ Object.defineProperty(PurchaseOrder_, 'name', { value: 'MFlowService.PurchaseOrd
 
 export function _PurchaseOrderItemAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
   return class PurchaseOrderItem extends Base {
+    declare materialName?: string | null
+    declare material?: __.Association.to<Material> | null
+    declare material_ID?: string | null
     declare createdAt?: __.CdsTimestamp | null
     /** Canonical user ID */
     declare createdBy?: _.User | null
@@ -163,8 +166,6 @@ export function _PurchaseOrderItemAspect<TBase extends new (...args: any[]) => o
     declare ID?: __.Key<string>
     declare purchaseOrder?: __.Association.to<PurchaseOrder> | null
     declare orderNumber?: string | null
-    declare material?: __.Association.to<Material> | null
-    declare material_ID?: string | null
     declare quantity?: number | null
     declare unitPrice?: number | null
     declare totalPrice?: number | null

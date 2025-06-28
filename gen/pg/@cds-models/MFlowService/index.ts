@@ -84,7 +84,7 @@ export function _PurchaseOrderAspect<TBase extends new (...args: any[]) => objec
     declare modifiedAt?: __.CdsTimestamp | null
     declare modifiedBy?: _.User | null
     declare ID?: __.Key<string>
-    declare orderNumber?: string | null
+    declare orderNumber?: __.Key<string>
     declare supplier?: __.Association.to<Supplier> | null
     declare supplier_ID?: string | null
     declare orderDate?: __.CdsDate | null
@@ -112,12 +112,13 @@ export function _PurchaseOrderItemAspect<TBase extends new (...args: any[]) => o
     declare modifiedBy?: _.User | null
     declare ID?: __.Key<string>
     declare purchaseOrder?: __.Association.to<PurchaseOrder> | null
-    declare purchaseOrder_ID?: string | null
+    declare orderNumber?: string | null
     declare material?: __.Association.to<Material> | null
     declare material_ID?: string | null
     declare quantity?: number | null
     declare unitPrice?: number | null
     declare totalPrice?: number | null
+    declare materialName?: string | null
     static readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
     declare static readonly keys: __.KeysOf<PurchaseOrderItem>;
     declare static readonly elements: __.ElementsOf<PurchaseOrderItem>;
@@ -130,6 +131,31 @@ Object.defineProperty(PurchaseOrderItem, 'is_singular', { value: true })
 export class PurchaseOrderItem_ extends Array<PurchaseOrderItem> {static drafts: __.DraftsOf<PurchaseOrderItem>
 $count?: number}
 Object.defineProperty(PurchaseOrderItem_, 'name', { value: 'MFlowService.PurchaseOrderItem' })
+
+export function _InventoryMovementAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class InventoryMovement extends Base {
+    declare ID?: __.Key<string>
+    declare createdAt?: __.CdsTimestamp | null
+    declare createdBy?: _.User | null
+    declare modifiedAt?: __.CdsTimestamp | null
+    declare modifiedBy?: _.User | null
+    declare material?: __.Association.to<Material> | null
+    declare material_ID?: string | null
+    declare movementType?: string | null
+    declare quantity?: number | null
+    declare referenceDoc?: string | null
+    declare notes?: string | null
+    static readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
+    declare static readonly keys: __.KeysOf<InventoryMovement>;
+    declare static readonly elements: __.ElementsOf<InventoryMovement>;
+    declare static readonly actions: globalThis.Record<never, never>;
+  };
+}
+export class InventoryMovement extends _InventoryMovementAspect(__.Entity) {}
+Object.defineProperty(InventoryMovement, 'name', { value: 'MFlowService.InventoryMovement' })
+Object.defineProperty(InventoryMovement, 'is_singular', { value: true })
+export class InventoryMovement_ extends Array<InventoryMovement> {$count?: number}
+Object.defineProperty(InventoryMovement_, 'name', { value: 'MFlowService.InventoryMovement' })
 
 
 export declare const adjustStock:  {

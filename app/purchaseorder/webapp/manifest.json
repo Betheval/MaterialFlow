@@ -110,14 +110,15 @@
           "options": {
             "settings": {
               "contextPath": "/PurchaseOrder",
-              "variantManagement": "Page",
+              "variantManagement": "None",
               "navigation": {
                 "PurchaseOrder": {
                   "detail": {
                     "route": "PurchaseOrderObjectPage"
                   }
                 }
-              }
+              },
+              "initialLoad": "Enabled"
             }
           }
         },

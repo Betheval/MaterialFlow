@@ -105,14 +105,15 @@
           "options": {
             "settings": {
               "contextPath": "/InventoryMovement",
-              "variantManagement": "Page",
+              "variantManagement": "None",
               "navigation": {
                 "InventoryMovement": {
                   "detail": {
                     "route": "InventoryMovementObjectPage"
                   }
                 }
-              }
+              },
+              "initialLoad": "Enabled"
             }
           }
         },

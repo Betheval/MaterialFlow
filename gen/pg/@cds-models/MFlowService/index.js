@@ -19,6 +19,9 @@ module.exports.PurchaseOrder_ = createEntityProxy(['MFlowService', 'PurchaseOrde
 // PurchaseOrderItem
 module.exports.PurchaseOrderItem = createEntityProxy(['MFlowService', 'PurchaseOrderItem'], { target: { is_singular: true } })
 module.exports.PurchaseOrderItem_ = createEntityProxy(['MFlowService', 'PurchaseOrderItem'], { target: { is_singular: false }})
+// InventoryMovement
+module.exports.InventoryMovement = createEntityProxy(['MFlowService', 'InventoryMovement'], { target: { is_singular: true } })
+module.exports.InventoryMovement_ = createEntityProxy(['MFlowService', 'InventoryMovement'], { target: { is_singular: false }})
 // events
 // actions
 module.exports.adjustStock = 'adjustStock'

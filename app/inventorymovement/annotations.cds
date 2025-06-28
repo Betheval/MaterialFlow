@@ -1,25 +1,34 @@
 using MFlowService as service from '../../srv/service';
 
 annotate service.InventoryMovement with @(
+    Capabilities.Deletable : false,
+    Capabilities.Updatable : false,
+    UI.SelectionFields : [
+        movementType,
+    ],
+);
+
+
+annotate service.InventoryMovement with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'movementType',
+            Label : 'Movement Type',
             Value : movementType,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'quantity',
+            Label : 'Quantity',
             Value : quantity,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'referenceDoc',
+            Label : 'Reference Doc',
             Value : referenceDoc,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'notes',
+            Label : 'Notes',
             Value : notes,
         },
     ]
@@ -75,22 +84,22 @@ annotate service.InventoryMovement with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'movementType',
+                Label : 'Movement Type',
                 Value : movementType,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'quantity',
+                Label : 'Quantity',
                 Value : quantity,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'referenceDoc',
+                Label : 'Reference Doc',
                 Value : referenceDoc,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'notes',
+                Label : 'Notes',
                 Value : notes,
             },
         ],
@@ -104,3 +113,7 @@ annotate service.InventoryMovement with @(
         },
     ]
 );
+annotate service.InventoryMovement with {
+    movementType @Common.Label : 'movementType'
+};
+

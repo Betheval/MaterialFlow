@@ -105,7 +105,7 @@
           "options": {
             "settings": {
               "contextPath": "/Suppliers",
-              "variantManagement": "Page",
+              "variantManagement": "None",
               "navigation": {
                 "Suppliers": {
                   "detail": {
@@ -116,15 +116,10 @@
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "actions": {
-                    "AddSuppliers": {
-                      "press": "suppliers.ext.controller.actionsSuppliers.onAddSupplier",
-                      "visible": true,
-                      "enabled": true,
-                      "text": "Add"
-                    }
                   }
                 }
-              }  
+              },
+              "initialLoad": "Enabled"  
             }
           }
         },

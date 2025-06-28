@@ -106,7 +106,7 @@
           "options": {
             "settings": {
               "contextPath": "/Materials",
-              "variantManagement": "Page",
+              "variantManagement": "None",
               "navigation": {
                 "Materials": {
                   "detail": {
@@ -126,7 +126,8 @@
                     }
                   }
                 }
-              }
+              },
+              "initialLoad": "Enabled"
             }
           }
         },
@@ -145,18 +146,18 @@
         }
       },
       "extends": {
-      "extensions": {
-        "sap.ui.viewExtensions": {
-          "sap.suite.ui.generic.template.ObjectPage.view.Details": {
-            "HeaderActions": {
-              "className": "sap.ui.core.Fragment",
-              "fragmentName": "materials.ext.ObjectPageHeaderActions",
-              "type": "XML"
+        "extensions": {
+          "sap.ui.viewExtensions": {
+            "sap.suite.ui.generic.template.ObjectPage.view.Details": {
+              "HeaderActions": {
+                "className": "sap.ui.core.Fragment",
+                "fragmentName": "materials.ext.ObjectPageHeaderActions",
+                "type": "XML"
+              }
             }
           }
         }
       }
-    }
     }
   },
   "sap.fiori": {

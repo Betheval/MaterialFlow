@@ -144,7 +144,7 @@ Object.defineProperty(PriceHistory_, 'name', { value: 'PriceHistory' })
 
 export function _PurchaseOrderAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
   return class PurchaseOrder extends _managedAspect(_cuidAspect(Base)) {
-    declare orderNumber?: string | null
+    declare orderNumber?: __.Key<string>
     declare supplier?: __.Association.to<Supplier> | null
     declare supplier_ID?: string | null
     declare orderDate?: __.CdsDate | null
@@ -166,7 +166,7 @@ Object.defineProperty(PurchaseOrders, 'name', { value: 'PurchaseOrders' })
 export function _PurchaseOrderItemAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
   return class PurchaseOrderItem extends _managedAspect(_cuidAspect(Base)) {
     declare purchaseOrder?: __.Association.to<PurchaseOrder> | null
-    declare purchaseOrder_ID?: string | null
+    declare orderNumber?: string | null
     declare material?: __.Association.to<Material> | null
     declare material_ID?: string | null
     declare quantity?: number | null

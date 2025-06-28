@@ -23,7 +23,11 @@ service MFlowService @(requires:'authenticated-user') {
     ]) as projection on s;
     @odata.draft.enabled
     entity PurchaseOrder as projection on po;
-    entity PurchaseOrderItem as projection on poi;
+    entity PurchaseOrderItem as projection on poi{
+        material.name as materialName,
+        material,
+        *
+    };
     entity InventoryMovement as projection on im;
 
     //Actions for Materials
@@ -88,7 +92,8 @@ annotate MFlowService.Categories with @(Capabilities.Insertable : true,
     Capabilities.Updatable : true, Capabilities.Deletable : true);
 annotate MFlowService.Suppliers with @(Capabilities.Insertable : true, 
     Capabilities.Updatable : true, Capabilities.Deletable : true);
-
+annotate MFlowService.PurchaseOrderItem with @(Capabilities.Insertable : true, 
+    Capabilities.Updatable : true, Capabilities.Deletable : true);
 
 
 

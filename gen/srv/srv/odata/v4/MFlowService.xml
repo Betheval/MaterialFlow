@@ -44,6 +44,9 @@
           <NavigationPropertyBinding Path="material" Target="Materials"/>
           <NavigationPropertyBinding Path="SiblingEntity" Target="PurchaseOrderItem"/>
         </EntitySet>
+        <EntitySet Name="InventoryMovement" EntityType="MFlowService.InventoryMovement">
+          <NavigationPropertyBinding Path="material" Target="Materials"/>
+        </EntitySet>
         <ActionImport Name="adjustStock" Action="MFlowService.adjustStock" EntitySet="Materials"/>
       </EntityContainer>
       <EntityType Name="Materials">
@@ -112,6 +115,7 @@
       <EntityType Name="PurchaseOrder">
         <Key>
           <PropertyRef Name="ID"/>
+          <PropertyRef Name="orderNumber"/>
           <PropertyRef Name="IsActiveEntity"/>
         </Key>
         <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
@@ -119,13 +123,13 @@
         <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="orderNumber" Type="Edm.String" MaxLength="50"/>
+        <Property Name="orderNumber" Type="Edm.String" MaxLength="50" Nullable="false"/>
         <NavigationProperty Name="supplier" Type="MFlowService.Suppliers">
           <ReferentialConstraint Property="supplier_ID" ReferencedProperty="ID"/>
         </NavigationProperty>
         <Property Name="supplier_ID" Type="Edm.Guid"/>
         <Property Name="orderDate" Type="Edm.Date"/>
-        <Property Name="status" Type="Edm.String" MaxLength="30"/>
+        <Property Name="status" Type="Edm.String" MaxLength="30" DefaultValue="Pending"/>
         <Property Name="totalAmount" Type="Edm.Decimal" Precision="10" Scale="2"/>
         <NavigationProperty Name="items" Type="Collection(MFlowService.PurchaseOrderItem)" Partner="purchaseOrder">
           <OnDelete Action="Cascade"/>
@@ -147,9 +151,9 @@
         <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <NavigationProperty Name="purchaseOrder" Type="MFlowService.PurchaseOrder" Partner="items">
-          <ReferentialConstraint Property="purchaseOrder_ID" ReferencedProperty="ID"/>
+          <ReferentialConstraint Property="orderNumber" ReferencedProperty="orderNumber"/>
         </NavigationProperty>
-        <Property Name="purchaseOrder_ID" Type="Edm.Guid"/>
+        <Property Name="orderNumber" Type="Edm.String" MaxLength="50"/>
         <NavigationProperty Name="material" Type="MFlowService.Materials">
           <ReferentialConstraint Property="material_ID" ReferencedProperty="ID"/>
         </NavigationProperty>
@@ -157,11 +161,30 @@
         <Property Name="quantity" Type="Edm.Int32"/>
         <Property Name="unitPrice" Type="Edm.Decimal" Precision="10" Scale="2"/>
         <Property Name="totalPrice" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <Property Name="materialName" Type="Edm.String" MaxLength="100"/>
         <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
         <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
         <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
         <NavigationProperty Name="DraftAdministrativeData" Type="MFlowService.DraftAdministrativeData" ContainsTarget="true"/>
         <NavigationProperty Name="SiblingEntity" Type="MFlowService.PurchaseOrderItem"/>
+      </EntityType>
+      <EntityType Name="InventoryMovement">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <NavigationProperty Name="material" Type="MFlowService.Materials">
+          <ReferentialConstraint Property="material_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="material_ID" Type="Edm.Guid"/>
+        <Property Name="movementType" Type="Edm.String" MaxLength="20"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="referenceDoc" Type="Edm.String" MaxLength="50"/>
+        <Property Name="notes" Type="Edm.String" MaxLength="255"/>
       </EntityType>
       <EntityType Name="DraftAdministrativeData">
         <Key>
@@ -619,38 +642,42 @@
         <Annotation Term="UI.LineItem">
           <Collection>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" String="orderNumber"/>
-              <PropertyValue Property="Label" String="Número de Orden"/>
+              <PropertyValue Property="Label" String="Order Number"/>
+              <PropertyValue Property="Value" Path="orderNumber"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" String="orderDate"/>
-              <PropertyValue Property="Label" String="Fecha de Orden"/>
+              <PropertyValue Property="Label" String="Order Date"/>
+              <PropertyValue Property="Value" Path="orderDate"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" String="status"/>
-              <PropertyValue Property="Label" String="Estado"/>
+              <PropertyValue Property="Label" String="Status"/>
+              <PropertyValue Property="Value" Path="status"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" String="totalAmount"/>
-              <PropertyValue Property="Label" String="Monto Total"/>
+              <PropertyValue Property="Label" String="Total Amount"/>
+              <PropertyValue Property="Value" Path="totalAmount"/>
             </Record>
           </Collection>
         </Annotation>
-        <Annotation Term="UI.FieldGroup" Qualifier="General">
+        <Annotation Term="UI.FieldGroup" Qualifier="GeneratedGroup1">
           <Record Type="UI.FieldGroupType">
             <PropertyValue Property="Data">
               <Collection>
                 <Record Type="UI.DataField">
-                  <PropertyValue Property="Value" String="supplier"/>
-                  <PropertyValue Property="Label" String="Proveedor"/>
+                  <PropertyValue Property="Label" String="Order Number"/>
+                  <PropertyValue Property="Value" Path="orderNumber"/>
                 </Record>
                 <Record Type="UI.DataField">
-                  <PropertyValue Property="Value" String="createdBy"/>
-                  <PropertyValue Property="Label" String="Creado Por"/>
+                  <PropertyValue Property="Label" String="Order Date"/>
+                  <PropertyValue Property="Value" Path="orderDate"/>
                 </Record>
                 <Record Type="UI.DataField">
-                  <PropertyValue Property="Value" String="status"/>
-                  <PropertyValue Property="Label" String="Estado"/>
+                  <PropertyValue Property="Label" String="Status"/>
+                  <PropertyValue Property="Value" Path="status"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Total Amount"/>
+                  <PropertyValue Property="Value" Path="totalAmount"/>
                 </Record>
               </Collection>
             </PropertyValue>
@@ -659,22 +686,14 @@
         <Annotation Term="UI.Facets">
           <Collection>
             <Record Type="UI.ReferenceFacet">
-              <PropertyValue Property="ID" String="GeneralInfo"/>
-              <PropertyValue Property="Label" String="Información General"/>
-              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+              <PropertyValue Property="ID" String="GeneratedFacet1"/>
+              <PropertyValue Property="Label" String="General Information"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneratedGroup1"/>
             </Record>
-            <Record Type="UI.CollectionFacet">
-              <PropertyValue Property="ID" String="ItemsFacet"/>
-              <PropertyValue Property="Label" String="Ítems de la Orden"/>
-              <PropertyValue Property="Facets">
-                <Collection>
-                  <Record Type="UI.ReferenceFacet">
-                    <PropertyValue Property="ID" String="Items"/>
-                    <PropertyValue Property="Label" String="Ítems"/>
-                    <PropertyValue Property="Target" AnnotationPath="items/@UI.LineItem"/>
-                  </Record>
-                </Collection>
-              </PropertyValue>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="GeneratedFacet2"/>
+              <PropertyValue Property="Label" String="Order Items Information"/>
+              <PropertyValue Property="Target" AnnotationPath="items/@UI.LineItem"/>
             </Record>
           </Collection>
         </Annotation>
@@ -735,10 +754,19 @@
                 <Record Type="Common.ValueListParameterDisplayOnly">
                   <PropertyValue Property="ValueListProperty" String="contactEmail"/>
                 </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="IsActiveEntity"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="HasActiveEntity"/>
+                </Record>
               </Collection>
             </PropertyValue>
           </Record>
         </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/status">
+        <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
       <Annotations Target="MFlowService.PurchaseOrder/IsActiveEntity">
         <Annotation Term="UI.Hidden" Bool="true"/>
@@ -756,20 +784,20 @@
         <Annotation Term="UI.LineItem">
           <Collection>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" String="material"/>
-              <PropertyValue Property="Label" String="Material"/>
+              <PropertyValue Property="Label" String="Material Name"/>
+              <PropertyValue Property="Value" Path="materialName"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" String="quantity"/>
               <PropertyValue Property="Label" String="Cantidad"/>
+              <PropertyValue Property="Value" Path="quantity"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" String="unitPrice"/>
               <PropertyValue Property="Label" String="Precio Unitario"/>
+              <PropertyValue Property="Value" Path="unitPrice"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" String="totalPrice"/>
               <PropertyValue Property="Label" String="Precio Total"/>
+              <PropertyValue Property="Value" Path="totalPrice"/>
             </Record>
           </Collection>
         </Annotation>
@@ -778,6 +806,21 @@
         <Annotation Term="Common.DraftNode">
           <Record Type="Common.DraftNodeType">
             <PropertyValue Property="PreparationAction" String="MFlowService.draftPrepare"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="true"/>
           </Record>
         </Annotation>
       </Annotations>
@@ -812,18 +855,21 @@
       <Annotations Target="MFlowService.PurchaseOrderItem/ID">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
       </Annotations>
-      <Annotations Target="MFlowService.PurchaseOrderItem/material_ID">
+      <Annotations Target="MFlowService.PurchaseOrderItem/materialName">
         <Annotation Term="Common.ValueList">
           <Record Type="Common.ValueListType">
             <PropertyValue Property="CollectionPath" String="Materials"/>
             <PropertyValue Property="Parameters">
               <Collection>
                 <Record Type="Common.ValueListParameterInOut">
-                  <PropertyValue Property="LocalDataProperty" PropertyPath="material_ID"/>
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="materialName"/>
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
                   <PropertyValue Property="ValueListProperty" String="ID"/>
                 </Record>
                 <Record Type="Common.ValueListParameterDisplayOnly">
-                  <PropertyValue Property="ValueListProperty" String="name"/>
+                  <PropertyValue Property="ValueListProperty" String="description"/>
                 </Record>
               </Collection>
             </PropertyValue>
@@ -841,6 +887,131 @@
       </Annotations>
       <Annotations Target="MFlowService.PurchaseOrderItem/DraftAdministrativeData">
         <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement">
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="movementType"/>
+              <PropertyValue Property="Value" Path="movementType"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="quantity"/>
+              <PropertyValue Property="Value" Path="quantity"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="referenceDoc"/>
+              <PropertyValue Property="Value" Path="referenceDoc"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="notes"/>
+              <PropertyValue Property="Value" Path="notes"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="GeneratedGroup1">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="movementType"/>
+                  <PropertyValue Property="Value" Path="movementType"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="quantity"/>
+                  <PropertyValue Property="Value" Path="quantity"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="referenceDoc"/>
+                  <PropertyValue Property="Value" Path="referenceDoc"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="notes"/>
+                  <PropertyValue Property="Value" Path="notes"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="GeneratedFacet1"/>
+              <PropertyValue Property="Label" String="General Information"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneratedGroup1"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/material_ID">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Materials"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="material_ID"/>
+                  <PropertyValue Property="ValueListProperty" String="ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="description"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="quantity"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="unitPrice"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="category_ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="supplier_ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="IsActiveEntity"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="HasActiveEntity"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
       </Annotations>
       <Annotations Target="MFlowService.DraftAdministrativeData">
         <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>

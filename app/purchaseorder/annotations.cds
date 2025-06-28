@@ -18,6 +18,7 @@ annotate service.PurchaseOrder with @(
             Value : status,
         },
         {
+
             $Type : 'UI.DataField',
             Label : 'Total Amount',
             Value : totalAmount,
@@ -96,17 +97,57 @@ annotate service.PurchaseOrder with @(
             Label : 'Order Items Information',
             Target : 'items/@UI.LineItem',
         },
-    ]
+    ],
 );
 
 
 ///PurchaseOrderItems
 annotate service.PurchaseOrderItem with @(
+    UI.FieldGroup #GeneratedGroup3 : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Label : 'Order Number',
+                Value : orderNumber,
+            },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Material ID',
+                Value : material_ID
+            },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Quantity',
+                Value : quantity,
+            },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Unit Price',
+                Value : unitPrice,
+            },
+        ],
+    },
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'GeneratedFacet3',
+            Label : 'Order Items Information',
+            Target : '@UI.FieldGroup#GeneratedGroup3',
+        },
+    ],
+);
+annotate service.PurchaseOrderItem with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'Material',
-            Value : material_ID
+            Label : 'Material ID',
+            Value :  material_ID,
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : materialName,
+            Label : 'Material Name',
         },
         {
             $Type : 'UI.DataField',
@@ -127,24 +168,36 @@ annotate service.PurchaseOrderItem with @(
 );
 
 annotate service.PurchaseOrderItem with {
-    material @Common.ValueList : {
-        $Type : 'Common.ValueListType',
-        CollectionPath : 'Materials',
-        Parameters : [
-            {
-                $Type : 'Common.ValueListParameterInOut',
-                LocalDataProperty : material_ID,
-                ValueListProperty : 'ID',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'name',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'description',
-            }
-        ],
-    }
+  material @Common.ValueList: {
+    $Type: 'Common.ValueListType',
+    CollectionPath: 'Materials',
+    Parameters: [
+      {
+        $Type: 'Common.ValueListParameterInOut',
+        LocalDataProperty: 'material_ID',
+        ValueListProperty: 'ID'
+      },
+      {
+        $Type: 'Common.ValueListParameterDisplayOnly',
+        ValueListProperty: 'name'
+      },
+      {
+        $Type: 'Common.ValueListParameterDisplayOnly',
+        ValueListProperty: 'description'
+      },
+      {
+        $Type: 'Common.ValueListParameterDisplayOnly',
+        ValueListProperty: 'unitPrice'
+      }
+    ]
+  }
 };
 
+annotate service.PurchaseOrder with {
+    totalAmount @readonly : true;
+};
+annotate service.PurchaseOrderItem with {
+    totalPrice @readonly : true;
+    unitPrice @readonly : true;
+    materialName @readonly : true;
+};

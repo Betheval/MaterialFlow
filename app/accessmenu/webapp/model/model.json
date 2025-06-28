@@ -18,12 +18,12 @@
 		},
 		{
 			"title": "Purchase Orders",
-			"icon": "sap-icon://group",
+			"icon": "sap-icon://my-sales-order",
 			"key": "page4"
 		},
 		{
 			"title": "Inventory Movements",
-			"icon": "sap-icon://group",
+			"icon": "sap-icon://inventory",
 			"key": "page5"
 		}
 	]

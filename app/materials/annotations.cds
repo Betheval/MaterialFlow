@@ -43,7 +43,12 @@ annotate service.Materials with {
 };
 
 // Habilitar operaciones CRUD estándar
-annotate service.Materials with @(Capabilities.Insertable : true, Capabilities.Updatable : true, Capabilities.Deletable : true);
+annotate service.Materials with @(Capabilities.Insertable : true, Capabilities.Updatable : true, Capabilities.Deletable : true,
+    UI.SelectionFields : [
+        name,
+        category.name,
+        supplier.name,
+    ],);
 
 // FieldGroup y Facet para ObjectPage editable
 annotate service.Materials with @(
@@ -73,12 +78,12 @@ annotate service.Materials with @(
             {
                 $Type : 'UI.DataField',
                 Label : 'Category',
-                Value : category_ID,
+                Value : category.name
             },
             {
                 $Type : 'UI.DataField',
                 Label : 'Supplier',
-                Value : supplier_ID,
+                Value : supplier.name,
             },
         ],
     },
@@ -91,3 +96,16 @@ annotate service.Materials with @(
         },
     ],
 );
+
+annotate service.Materials with {
+    name @Common.Label : 'Name'
+};
+
+annotate service.Categories with {
+    name @Common.Label : 'Category Name'
+};
+
+annotate service.Suppliers with {
+    name @Common.Label : 'Supplier Name'
+};
+

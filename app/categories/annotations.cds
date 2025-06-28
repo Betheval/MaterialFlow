@@ -4,10 +4,13 @@ annotate service.Categories with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'name',
+            Label : 'Name',
             Value : name,
         },
-    ]
+    ],
+    UI.SelectionFields : [
+        name,
+    ],
 );
 annotate service.Categories with @(
     UI.FieldGroup #GeneratedGroup1 : {
@@ -15,7 +18,7 @@ annotate service.Categories with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'name',
+                Label : 'Name',
                 Value : name,
             },
         ],

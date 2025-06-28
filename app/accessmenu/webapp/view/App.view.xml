@@ -32,22 +32,22 @@
 					type="XML" />
 		</tnt:sideContent>
 		<tnt:mainContents>
-			<NavContainer id="pageContainer" initialPage="page2" height="100%" width="100%">
+			<NavContainer id="pageContainer" initialPage="page1" height="100%" width="100%">
 				<pages>
 					<ScrollContainer id="page1" horizontal="false" vertical="true" height="100%">
-						<core:ComponentContainer id="pageMaterials" name="materials" async="true" manifest="true" component="materials" height="1080px" width="100%"></core:ComponentContainer>
+						<core:ComponentContainer id="pageMaterials" name="materials" async="true" manifest="true" component="materials" height="900px" width="100%"></core:ComponentContainer>
 					</ScrollContainer>
 					<ScrollContainer id="page2" horizontal="false" vertical="true" height="100%">
-						<core:ComponentContainer id="pageSuppliers" name="suppliers" async="true" manifest="true" component="suppliers" height="1080px" width="100%"></core:ComponentContainer>
+						<core:ComponentContainer id="pageSuppliers" name="suppliers" async="true" manifest="true" component="suppliers" height="900px" width="100%"></core:ComponentContainer>
 					</ScrollContainer>
 					<ScrollContainer id="page3" horizontal="false" vertical="true" height="100%">
-						<core:ComponentContainer id="pageCategories" name="categories" async="true" manifest="true" component="categories" height="1080px" width="100%"></core:ComponentContainer>
+						<core:ComponentContainer id="pageCategories" name="categories" async="true" manifest="true" component="categories" height="900px" width="100%"></core:ComponentContainer>
 					</ScrollContainer>
 					<ScrollContainer id="page4" horizontal="false" vertical="true" height="100%">
-						<core:ComponentContainer id="pagePurchaseOrder" name="purchaseorder" async="true" manifest="true" component="purchaseorder" height="1080px" width="100%"></core:ComponentContainer>
+						<core:ComponentContainer id="pagePurchaseOrder" name="purchaseorder" async="true" manifest="true" component="purchaseorder" height="900px" width="100%"></core:ComponentContainer>
 					</ScrollContainer>
 					<ScrollContainer id="page5" horizontal="false" vertical="true" height="100%">
-						<core:ComponentContainer id="pageinventoryMovement" name="inventorymovement" async="true" manifest="true" component="inventorymovement" height="1080px" width="100%"></core:ComponentContainer>
+						<core:ComponentContainer id="pageinventoryMovement" name="inventorymovement" async="true" manifest="true" component="inventorymovement" height="900px" width="100%"></core:ComponentContainer>
 					</ScrollContainer>
 				</pages>
 			</NavContainer>
