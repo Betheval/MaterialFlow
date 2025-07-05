@@ -18,19 +18,30 @@ annotate service.InventoryMovement with @(
         },
         {
             $Type : 'UI.DataField',
+            Label: 'Order Number',
+            Value : orderNumber,
+        },
+        {
+            $Type : 'UI.DataField',
+            Label : 'Material ID',
+            Value : material_ID,
+        },
+        {
+            $Type : 'UI.DataField',
+            Label : 'Material Name',
+            Value : material.name
+        },
+        {
+            $Type : 'UI.DataField',
             Label : 'Quantity',
             Value : quantity,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'Reference Doc',
-            Value : referenceDoc,
+            Label : 'Movement Date',
+            Value : movementDate,
         },
-        {
-            $Type : 'UI.DataField',
-            Label : 'Notes',
-            Value : notes,
-        },
+        
     ]
 );
 annotate service.InventoryMovement with {
@@ -84,6 +95,26 @@ annotate service.InventoryMovement with @(
         Data : [
             {
                 $Type : 'UI.DataField',
+                Label : 'Order Number',
+                Value : orderNumber,
+            },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Movement Date',
+                Value : movementDate,
+            },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Material ID',
+                Value : material_ID,
+            },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Material Name',
+                Value : material.name,
+            },
+            {
+                $Type : 'UI.DataField',
                 Label : 'Movement Type',
                 Value : movementType,
             },
@@ -91,16 +122,6 @@ annotate service.InventoryMovement with @(
                 $Type : 'UI.DataField',
                 Label : 'Quantity',
                 Value : quantity,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'Reference Doc',
-                Value : referenceDoc,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'Notes',
-                Value : notes,
             },
         ],
     },
@@ -113,7 +134,9 @@ annotate service.InventoryMovement with @(
         },
     ]
 );
+
 annotate service.InventoryMovement with {
     movementType @Common.Label : 'movementType'
 };
+
 

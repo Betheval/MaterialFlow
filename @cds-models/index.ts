@@ -88,10 +88,10 @@ export function _MaterialAspect<TBase extends new (...args: any[]) => object>(Ba
     declare description?: string | null
     declare quantity?: number | null
     declare unitPrice?: number | null
-    declare category?: __.Association.to<Category> | null
     declare category_ID?: string | null
-    declare supplier?: __.Association.to<Supplier> | null
+    declare category?: __.Association.to<Category> | null
     declare supplier_ID?: string | null
+    declare supplier?: __.Association.to<Supplier> | null
     static override readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
     declare static readonly keys: __.KeysOf<Material> & typeof cuid.keys;
     declare static readonly elements: __.ElementsOf<Material>;
@@ -290,10 +290,11 @@ export function _InventoryMovementAspect<TBase extends new (...args: any[]) => o
   return class InventoryMovement extends _cuidAspect(_managedAspect(Base)) {
     declare material?: __.Association.to<Material> | null
     declare material_ID?: string | null
+    declare purchaseOrder?: __.Association.to<PurchaseOrder> | null
+    declare orderNumber?: string | null
     declare movementType?: string | null
     declare quantity?: number | null
-    declare referenceDoc?: string | null
-    declare notes?: string | null
+    declare movementDate?: __.CdsDateTime | null
     static override readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
     declare static readonly keys: __.KeysOf<InventoryMovement> & typeof cuid.keys;
     declare static readonly elements: __.ElementsOf<InventoryMovement>;

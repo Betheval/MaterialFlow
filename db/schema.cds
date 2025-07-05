@@ -4,8 +4,10 @@ entity Materials: managed, cuid {
     description     : String(255);
     quantity        : Integer;
     unitPrice       : Decimal(10,2);
-    category        : Association to Categories;
-    supplier        : Association to Suppliers;
+    category_ID     : UUID;
+    category        : Association to Categories on category_ID = category.ID;
+    supplier_ID     : UUID;
+    supplier        : Association to Suppliers on  supplier_ID = supplier.ID;
 }
 entity Categories: managed, cuid {
     name            : String(50);
@@ -46,9 +48,11 @@ entity PurchaseOrderItems : managed, cuid {
   totalPrice    : Decimal(10,2);
 }
 entity InventoryMovement : cuid, managed {
-    material        : Association to Materials;
-    movementType    : String(20);      // Ej: 'Entrada', 'Salida', Ajuste
-    quantity        : Integer;
-    referenceDoc    : String(50);      // Opcional: referencia a OC, factura, etc.
-    notes           : String(255);
+    material        : Association to Materials on material.ID = $self.material_ID;
+    material_ID      : UUID;          // ID del material
+    purchaseOrder   : Association to PurchaseOrders on purchaseOrder.orderNumber = $self.orderNumber;
+    orderNumber     : String(50);      // Referencia a la orden de compra
+    movementType    : String(20);      // Ej: 'Entrada', 'Salida'
+    quantity        : Integer;         // Cantidad del movimiento
+    movementDate    : DateTime;        // Fecha del movimiento
 }

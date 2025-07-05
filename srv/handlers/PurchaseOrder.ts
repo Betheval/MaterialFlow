@@ -1,4 +1,5 @@
 import cds from "@sap/cds";
+import { InventoryMov } from "./InventoryMovement";
 
 export class PurchaseOrder {
   private req: any;

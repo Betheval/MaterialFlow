@@ -4,7 +4,7 @@ annotate service.Categories with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'Name',
+            Label : 'Category Name',
             Value : name,
         },
     ],
@@ -32,3 +32,7 @@ annotate service.Categories with @(
         },
     ]
 );
+
+annotate service.Categories with {
+    name @Common.Label : 'Category Name'
+}

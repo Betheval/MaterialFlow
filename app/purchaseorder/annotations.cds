@@ -1,4 +1,5 @@
 using MFlowService as service from '../../srv/service';
+
 ///PurchaseOrder
 annotate service.PurchaseOrder with @(
     UI.LineItem : [
@@ -22,6 +23,11 @@ annotate service.PurchaseOrder with @(
             $Type : 'UI.DataField',
             Label : 'Total Amount',
             Value : totalAmount,
+        },
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'MFlowService.approveOrder',
+            Label : 'Approve Order'
         },
     ]
 );
@@ -163,7 +169,7 @@ annotate service.PurchaseOrderItem with @(
             $Type : 'UI.DataField',
             Label : 'Precio Total',
             Value : totalPrice,
-        },
+        }
     ],
 );
 
@@ -201,3 +207,9 @@ annotate service.PurchaseOrderItem with {
     unitPrice @readonly : true;
     materialName @readonly : true;
 };
+
+annotate service.PurchaseOrder @(Common.SideEffects #AfterApprove: {
+    SourceEntities  : [],
+    TargetProperties: [status],
+    TriggerAction   : 'MFlowService.approveOrder',
+});

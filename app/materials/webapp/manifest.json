@@ -117,13 +117,6 @@
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "actions": {
-                    "MaterialsExt": {
-                      "press": "materials.ext.materialsExt.MaterialsExt.OnAdjustStock",
-                      "visible": true,
-                      "enabled": true,
-                      "requiresSelection": true,
-                      "text": "Adjust Stock"
-                    }
                   }
                 }
               },
@@ -141,19 +134,6 @@
               "editableHeaderContent": false,
               "contextPath": "/Materials",
               "editable": true
-            }
-          }
-        }
-      },
-      "extends": {
-        "extensions": {
-          "sap.ui.viewExtensions": {
-            "sap.suite.ui.generic.template.ObjectPage.view.Details": {
-              "HeaderActions": {
-                "className": "sap.ui.core.Fragment",
-                "fragmentName": "materials.ext.ObjectPageHeaderActions",
-                "type": "XML"
-              }
             }
           }
         }

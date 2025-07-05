@@ -4,7 +4,7 @@ annotate service.Suppliers with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'Name',
+            Label : 'Supllier Name',
             Value : name,
         },
         {
@@ -24,14 +24,14 @@ annotate service.Suppliers with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'Name',
+                Label : 'Supplier Name',
                 Value : name,
             },
             {
                 $Type : 'UI.DataField',
                 Label : 'Contact Email',
                 Value : contactEmail,
-            },
+            }, 
         ],
     },
     UI.Facets : [
@@ -44,6 +44,7 @@ annotate service.Suppliers with @(
     ]
 );
 annotate service.Suppliers with {
-    contactEmail @Common.Label : 'Contact Email'
+    name @Common.Label : 'Supplier Name';
+    contactEmail @Common.Label : 'Contact Email';
 };
 
