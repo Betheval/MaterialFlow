@@ -3,6 +3,7 @@ import * as _ from './..';
 import * as __ from './../_';
 
 export default class {
+  declare static readonly chatWithLlama: typeof chatWithLlama;
 }
 
 export function _MaterialAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
@@ -143,6 +144,15 @@ export function _PurchaseOrderAspect<TBase extends new (...args: any[]) => objec
         __parameters: globalThis.Record<never, never>, __returns: PurchaseOrder
         kind: 'action'
       }
+      cancelOrder:  {
+        // positional
+        (): PurchaseOrder
+        // named
+        ({}: globalThis.Record<never, never>): PurchaseOrder
+        // metadata (do not use)
+        __parameters: globalThis.Record<never, never>, __returns: PurchaseOrder
+        kind: 'action'
+      }
     };
   };
 }
@@ -240,3 +250,14 @@ Object.defineProperty(InventoryMovement, 'is_singular', { value: true })
 */
 export class InventoryMovement_ extends Array<InventoryMovement> {$count?: number}
 Object.defineProperty(InventoryMovement_, 'name', { value: 'MFlowService.InventoryMovement' })
+
+
+export declare const chatWithLlama:  {
+  // positional
+  (message: string | null): globalThis.Promise<string | null> | string | null
+  // named
+  ({message}: {message?: string | null}): globalThis.Promise<string | null> | string | null
+  // metadata (do not use)
+  __parameters: {message?: string | null}, __returns: globalThis.Promise<string | null> | string | null
+  kind: 'action'
+}

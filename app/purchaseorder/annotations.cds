@@ -28,6 +28,10 @@ annotate service.PurchaseOrder with @(
             $Type : 'UI.DataFieldForAction',
             Action : 'MFlowService.approveOrder',
             Label : 'Approve Order'
+        },{
+            $Type : 'UI.DataFieldForAction',
+            Action : 'MFlowService.cancelOrder',
+            Label : 'Cancel Order'
         },
     ]
 );

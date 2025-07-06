@@ -3,12 +3,14 @@
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
     xmlns:tnt="sap.tnt">
 <tnt:ToolPage id="page">
 		<tnt:header>
 			<f:ShellBar id="_IDGenShellBar1"
 				showMenuButton="true"
 				showCopilot="true"
+				copilotPressed="onCopilotPressed"
 				showNotifications="true"
 				notificationsPressed="onShowNotifications"
 				menuButtonPressed="onMenuButtonPress">
@@ -32,6 +34,10 @@
 					type="XML" />
 		</tnt:sideContent>
 		<tnt:mainContents>
+
+
+			<l:Splitter id="mainSplitter" height="100%">
+
 			<NavContainer id="pageContainer" initialPage="page1" height="100%" width="100%">
 				<pages>
 					<ScrollContainer id="page1" horizontal="false" vertical="true" height="100%">
@@ -51,6 +57,28 @@
 					</ScrollContainer>
 				</pages>
 			</NavContainer>
+			<Panel
+    id="chatbotPanel"
+    width="100%"
+    expandable="true"
+    expanded="true"
+    headerText="Asistente Virtual"
+	height="500px"
+    class="sapUiSmallMarginBegin sapUiNoContentPadding">
+    <VBox id="_IDGenVBox">
+        <List id="chatList" items="{chatModel>/chat}">
+            <CustomListItem id="_IDGenCustomListItem1">
+                <HBox id="_IDGenHBox">
+                    <Text id="_IDGenText" text="{chatModel>sender}: " class="sapUiTinyMarginEnd"/>
+                    <Text id="_IDGenText1" text="{chatModel>message}"/>
+                </HBox>
+            </CustomListItem>
+        </List>
+        <TextArea id="chatInput" width="100%" placeholder="Escribe tu mensaje aquí..." liveChange="onChatInputChange"/>
+        <Button id="_IDGenButton" text="Enviar" press="onSendChat"/>
+    </VBox>
+</Panel>
+			</l:Splitter>
 		</tnt:mainContents>
 	</tnt:ToolPage>
 </mvc:View>

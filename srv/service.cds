@@ -32,12 +32,14 @@ service MFlowService @(requires: 'authenticated-user') {
     }, ])                    as projection on s;
 
     @odata.draft.enabled
-    entity PurchaseOrder     as projection on po{
-        *
-    }
-    actions{
-        action approveOrder() returns PurchaseOrder;
-    };
+    entity PurchaseOrder     as
+        projection on po {
+            *
+        }
+        actions {
+            action approveOrder() returns PurchaseOrder;
+            action cancelOrder()  returns PurchaseOrder;
+        };
 
 
     entity PurchaseOrderItem as
@@ -48,6 +50,9 @@ service MFlowService @(requires: 'authenticated-user') {
         };
 
     entity InventoryMovement as projection on im;
+    //CHATBOT
+
+    action chatWithLlama(message : String) returns String;
 
 }
 
@@ -92,6 +97,7 @@ annotate MFlowService.Suppliers with @(UI.LineItem: [
         Label: 'Contact Email',
     }
 ]);
+
 
 annotate MFlowService.Materials with @(
     Capabilities.Insertable: true,

@@ -16,6 +16,10 @@ sap.ui.define(
     return Controller.extend("accessmenu.controller.App", {
       onInit: function () {
         this.oModel = new JSONModel();
+        this.getView().setModel(
+          new sap.ui.model.json.JSONModel({ chat: [], showChatbot: false }),
+          "chatModel"
+        );
         this.oModel.loadData(
           sap.ui.require.toUrl("accessmenu/model/model.json")
         );
@@ -34,7 +38,6 @@ sap.ui.define(
         });
         this.getView().setModel(oNotificationModel, "notifications");
       },
-
       onItemSelect: function (oEvent) {
         var item = oEvent.getParameter("item");
         var key = item.getKey();
@@ -53,33 +56,43 @@ sap.ui.define(
           });
         }
       },
-
       onMenuButtonPress: function () {
         var toolPage = this.byId("page");
 
         toolPage.setSideExpanded(!toolPage.getSideExpanded());
       },
-      onCopilotPress: function (oEvent) {
-        var oToolPage = this.byId("page");
+      onSendChat: async function () {
         var oView = this.getView();
-
-        if (!this._oChatbotFragment) {
-          sap.ui.core.Fragment.load({
-            name: "accessmenu.fragment.Chatbot",
-            id: oView.getId(),
-            controller: this,
-          }).then(
-            function (oFragment) {
-              this._oChatbotFragment = oFragment;
-              // Ahora sí, agrega el fragmento al sideContent derecho
-              oToolPage.removeAllSideContent("End");
-              oToolPage.addSideContent(oFragment, "End");
-            }.bind(this)
-          );
-        } else {
-          oToolPage.removeAllSideContent("End");
-          oToolPage.addSideContent(this._oChatbotFragment, "End");
+        var oModel = oView.getModel("chatModel");
+        var sMessage = oView.byId("chatInput").getValue();
+        if (!sMessage) {
+          sap.m.MessageToast.show("Por favor, escribe un mensaje.");
+          return;
         }
+
+        // Añadir mensaje del usuario
+        var aChat = oModel.getProperty("/chat");
+        aChat.push({ sender: "Tú", message: sMessage });
+        oModel.setProperty("/chat", aChat);
+
+        try {
+          const oResponse = await fetch("/odata/v4/mflow/chatWithLlama", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: sMessage }),
+          });
+          const oData = await oResponse.json();
+          // Mostrar respuesta del bot
+          aChat.push({ sender: "Bot", message: oData.value.response });
+          oModel.setProperty("/chat", aChat);
+        } catch (e) {
+          aChat.push({
+            sender: "Bot",
+            message: "Error conectando con el asistente.",
+          });
+          oModel.setProperty("/chat", aChat);
+        }
+        oView.byId("chatInput").setValue("");
       },
       onShowNotifications: function () {
         var oNotificationListGroup = sap.ui.core.Fragment.byId(
@@ -125,7 +138,6 @@ sap.ui.define(
           aNotifications.length
         );
       },
-
       onNotificationClose: function (oEvent) {
         var oItem = oEvent.getSource();
         var oList = oItem.getParent();
@@ -139,6 +151,11 @@ sap.ui.define(
             aNotifications.length
           );
         }
+      },
+      onCopilotPressed: function () {
+        var oModel = this.getView().getModel("chatModel");
+        var bVisible = oModel.getProperty("/showChatbot");
+        oModel.setProperty("/showChatbot", !bVisible);
       },
     });
   }

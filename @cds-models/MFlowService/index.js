@@ -24,4 +24,5 @@ module.exports.InventoryMovement = createEntityProxy(['MFlowService', 'Inventory
 module.exports.InventoryMovement_ = createEntityProxy(['MFlowService', 'InventoryMovement'], { target: { is_singular: false }})
 // events
 // actions
+module.exports.chatWithLlama = 'chatWithLlama'
 // enums
