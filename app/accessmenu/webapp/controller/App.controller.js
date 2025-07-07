@@ -17,7 +17,7 @@ sap.ui.define(
       onInit: function () {
         this.oModel = new JSONModel();
         this.getView().setModel(
-          new sap.ui.model.json.JSONModel({ chat: [], showChatbot: false }),
+          new sap.ui.model.json.JSONModel({ chat: [{ sender: "Bot", message: "¡Hi! How can I help you today?" }], showChatbot: false }),
           "chatModel"
         );
         this.oModel.loadData(

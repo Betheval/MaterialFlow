@@ -57,27 +57,42 @@
 					</ScrollContainer>
 				</pages>
 			</NavContainer>
-			<Panel
-    id="chatbotPanel"
-    width="100%"
-    expandable="true"
-    expanded="true"
-    headerText="Asistente Virtual"
-	height="500px"
-    class="sapUiSmallMarginBegin sapUiNoContentPadding">
-    <VBox id="_IDGenVBox">
-        <List id="chatList" items="{chatModel>/chat}">
-            <CustomListItem id="_IDGenCustomListItem1">
-                <HBox id="_IDGenHBox">
-                    <Text id="_IDGenText" text="{chatModel>sender}: " class="sapUiTinyMarginEnd"/>
-                    <Text id="_IDGenText1" text="{chatModel>message}"/>
-                </HBox>
-            </CustomListItem>
-        </List>
-        <TextArea id="chatInput" width="100%" placeholder="Escribe tu mensaje aquí..." liveChange="onChatInputChange"/>
-        <Button id="_IDGenButton" text="Enviar" press="onSendChat"/>
-    </VBox>
-</Panel>
+			<Panel id="chatbotPanel"
+				width="95%"
+				expandable="true"
+				expanded="true"
+				headerText="Virtual Assistant"
+				height="100%"
+				class="chatbotPanel sapUiSmallMarginBegin sapUiNoContentPadding">
+					<FlexBox id="_IDGenFlexBox" direction="Column" height="100%" class="chatbotVBox">
+						<List id="chatList"
+							items="{chatModel>/chat}"
+							growing="true"
+							growingScrollToLoad="true"
+						>
+							<layoutData>
+								<FlexItemData id="_IDGenFlexItemData" growFactor="1"/>
+							</layoutData>
+							<CustomListItem id="_IDGenCustomListItem">
+								<HBox id="_IDGenHBox1">
+									<Text id="_IDGenText" text="{chatModel>sender}: " class="chatSender sapUiTinyMarginEnd" />
+									<Text id="_IDGenText1" text="{chatModel>message}" class="chatMessage"/>
+								</HBox>
+							</CustomListItem>
+						</List>
+						<HBox id="_IDGenHBox2" alignItems="Center" class="chatInputBar sapUiTinyMarginTop sapUiSmallMargin">
+							<TextArea id="chatInput"
+									width="600px"
+									growing="false"
+									rows="2"
+									placeholder="Write your message here..."/>
+							<Button id="sendChatButton"
+									text="Enviar"
+									type="Emphasized"
+									press="onSendChat"/>
+						</HBox>
+					</FlexBox>
+				</Panel>
 			</l:Splitter>
 		</tnt:mainContents>
 	</tnt:ToolPage>
