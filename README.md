@@ -1,132 +1,92 @@
 # MaterialFlow
-MaterialFlow is a really basic Fiori + CAP application that allows managing materials, categories, and suppliers. 
+
+MaterialFlow is a basic application developed with SAP CAP and Fiori Elements for managing materials, purchase orders, categories, suppliers, and inventory movements.
+
 ## Features
 
-### Materials
+- **Material Management:** Create, update, delete, and view materials.
+- **Purchase Orders:** Create, edit, approve, and view orders and their items.
+- **Suppliers & Categories:** Manage related catalogs.
+- **Inventory Movements:** Automatic registration when approving orders.
+- **Virtual Assistant:** Integrated chatbot for contextual help.
+- **Fiori Elements Applications** for each main entity.
 
-- **Adjust Stock**: Allows adjusting the stock quantity of a material.
-- **Calculate Total Value**: Calculates the total value of a material based on its quantity and unit price.
-- **Add Material**: Allows adding a new material.
-- **Update Material Price**: Allows updating the unit price of a material.
-- **Delete Material**: Allows deleting a material.
-- **Get Supplier Materials**: Retrieves all materials associated with a supplier.
-- **Change Supplier**: Allows changing the supplier of a material.
+## Project Structure
 
-### Categories
+```
+.
+├── app/                # Fiori applications (UI)
+│   ├── accessmenu/
+│   ├── categories/
+│   ├── inventorymovement/
+│   ├── materials/
+│   ├── purchaseorder/
+│   └── suppliers/
+├── db/                 # Data model and sample data
+│   ├── schema.cds
+│   └── data/
+├── srv/                # CAP services and business logic
+│   ├── service.cds
+│   ├── service.ts
+│   └── handlers/
+├── gen/                # Generated files (do not edit)
+├── resources/          # Static resources (images, etc.)
+├── package.json
+├── mta.yaml
+├── Dockerfile
+└── README.md
+```
 
-- **Add Category**: Allows adding a new category.
+## Installation
 
-### Suppliers
+1. **Prerequisites:**
+   - Node.js LTS (recommended v16+)
+   - npm
+   - [@sap/cds-dk](https://cap.cloud.sap/docs/get-started/) (optional, for CAP commands)
 
-- **Add Supplier**: Allows adding a new supplier.
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+
+3. **Load sample data (optional):**
+   ```sh
+   cds deploy --to sqlite:db.sqlite
+   ```
+
+## Running the Application
+
+1. **Start the CAP backend:**
+   ```sh
+   cds watch
+   ```
+   or
+   ```sh
+   npm start
+   ```
+
+2. **Access the Fiori applications:**
+   - [Materials](http://localhost:4004/materials/webapp/index.html)
+   - [Purchase Orders](http://localhost:4004/purchaseorder/webapp/index.html)
+   - [Suppliers](http://localhost:4004/suppliers/webapp/index.html)
+   - [Categories](http://localhost:4004/categories/webapp/index.html)
+   - [Inventory Movements](http://localhost:4004/inventorymovement/webapp/index.html)
+   - [Main Menu](http://localhost:4004/accessmenu/webapp/index.html)
 
 ## API
 
-### Materials
+The backend exposes OData endpoints and several custom actions for operations such as adjusting stock, approving orders, changing suppliers, etc.  
+See the **API** section in this README for usage examples.
 
-- **Adjust Stock**
-    ```http
-    POST /odata/v4/mflow/adjustStock
-    Content-Type: application/json
+## Docker Deployment
 
-    {
-      "materialID": "UUID_OF_MATERIAL",
-      "adjustment": 7
-    }
-    ```
+You can run the application in a Docker container:
 
-- **Calculate Total Value**
-    ```http
-    POST /odata/v4/mflow/calculateTotalValue
-    Content-Type: application/json
-
-    {
-      "materialID": "UUID_OF_MATERIAL"
-    }
-    ```
-
-- **Add Material**
-    ```http
-    POST /odata/v4/mflow/addMaterial
-    Content-Type: application/json
-
-    {
-      "name": "New Material",
-      "description": "Description of the new material",
-      "quantity": 100,
-      "unitPrice": 50.00,
-      "categoryID": "UUID_OF_CATEGORY",
-      "supplierID": "UUID_OF_SUPPLIER"
-    }
-    ```
-
-- **Update Material Price**
-    ```http
-    POST /odata/v4/mflow/updateMaterialPrice
-    Content-Type: application/json
-
-    {
-      "materialID": "UUID_OF_MATERIAL",
-      "newPrice": 1600.00
-    }
-    ```
-
-- **Delete Material**
-    ```http
-    POST /odata/v4/mflow/deleteMaterial
-    Content-Type: application/json
-
-    {
-      "materialID": "UUID_OF_MATERIAL"
-    }
-    ```
-
-- **Get Supplier Materials**
-    ```http
-    POST /odata/v4/mflow/getSupplierMaterials
-    Content-Type: application/json
-
-    {
-      "supplierID": "UUID_OF_SUPPLIER"
-    }
-    ```
-
-- **Change Supplier**
-    ```http
-    POST /odata/v4/mflow/changeSupplier
-    Content-Type: application/json
-
-    {
-      "materialID": "UUID_OF_MATERIAL",
-      "supplierID": "UUID_OF_NEW_SUPPLIER"
-    }
-    ```
-
-### Categories
-
-- **Add Category**
-    ```http
-    POST /odata/v4/mflow/addCategory
-    Content-Type: application/json
-
-    {
-      "name": "New Category"
-    }
-    ```
-
-### Suppliers
-
-- **Add Supplier**
-    ```http
-    POST /odata/v4/mflow/addSupplier
-    Content-Type: application/json
-
-    {
-      "name": "New Supplier",
-      "email": "supplier@example.com"
-    }
-    ```
+```sh
+docker build -t materialflow .
+docker run -p 4004:4004 materialflow
+```
 
 ## Contributions
 
-Contributions are welcome. Please open an issue or a pull request to discuss any changes you would like to make.
+Contributions are welcome! Open an issue or pull request for suggestions or improvements.
