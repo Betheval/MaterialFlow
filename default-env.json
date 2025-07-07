@@ -16,5 +16,12 @@
           }
         }
       ]
-    }
-  }
+    },
+    "destinations": [
+      {
+        "name": "ollama",
+        "url": "http://localhost:11434",
+        "forwardAuthToken": true
+      }
+    ]
+}

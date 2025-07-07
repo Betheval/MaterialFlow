@@ -1,8 +1,36 @@
 {
   "scopes": [
     {
+      "name": "$XSAPPNAME.MaterialFlow.Supervise",
+      "description": "Supervisor scope",
+      "grant-as-authority-to-apps": [
+        "MaterialFlow"
+      ]
+    },
+    {
+      "name": "$XSAPPNAME.MaterialFlow.Audit",
+      "description": "Auditor scope",
+      "grant-as-authority-to-apps": [
+        "MaterialFlow"
+      ]
+    },
+    {
+      "name": "$XSAPPNAME.MaterialFlow.Operate",
+      "description": "Operator scope",
+      "grant-as-authority-to-apps": [
+        "MaterialFlow"
+      ]
+    },
+    {
       "name": "$XSAPPNAME.MaterialFlow.Read",
       "description": "Reader scope",
+      "grant-as-authority-to-apps": [
+        "MaterialFlow"
+      ]
+    },
+    {
+      "name": "$XSAPPNAME.MaterialFlow.Write",
+      "description": "Writer scope",
       "grant-as-authority-to-apps": [
         "MaterialFlow"
       ]
@@ -10,6 +38,27 @@
   ],
   "attributes": [],
   "role-templates": [
+    {
+      "name": "MaterialFlow.Supervisor",
+      "description": "Supervisor role",
+      "scope-references": [
+        "$XSAPPNAME.MaterialFlow.Supervise"
+      ]
+    },
+    {
+      "name": "MaterialFlow.Auditor",
+      "description": "Auditor role",
+      "scope-references": [
+        "$XSAPPNAME.MaterialFlow.Audit"
+      ]
+    },
+    {
+      "name": "MaterialFlow.Operator",
+      "description": "Operator role",
+      "scope-references": [
+        "$XSAPPNAME.MaterialFlow.Operate"
+      ]
+    },
     {
       "name": "MaterialFlow.Read",
       "description": "Reader role",

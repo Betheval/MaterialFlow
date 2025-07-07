@@ -6,27 +6,34 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@cap-js/postgres": "^1.10.4",
-    "@sap/cds": "^7",
+    "@cap-js/cds-types": "^0.10.0",
+    "@cap-js/postgres": "^1.14.0",
+    "@sap/cds": "^8.9.4",
     "@sap/cds-dk": "^8.5.0",
     "@sap/hana-client": "^2.22.32",
-    "axios": "^1.7.9",
-    "express": "^4",
+    "@sap/xsenv": "^3.0.0",
     "@sap/xssec": "^4",
-    "@sap/xsenv": "^3.0.0"
+    "axios": "^1.10.0",
+    "chai": "^5.2.0",
+    "express": "^4"
   },
   "devDependencies": {
+    "@cap-js/cds-typer": "^0.34.0",
     "@sap/cds-dk": "^8",
-    "@sap/ux-specification": "^1.124.7",
-    "sqlite3": "^5.0.4"
+    "@sap/ux-specification": "^1.124.17",
+    "@types/node": "^22.15.18",
+    "sqlite3": "^5.0.4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   },
   "scripts": {
+    "build": "tsc",
     "start": "cds run",
-    "watch-access_menu": "cds watch --open access_menu/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-materials": "cds watch --open materials/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-suppliers": "cds watch --open suppliers/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-accessmenu": "cds watch --open accessmenu/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch": "tsc -w",
+    "start:ts": "cds-ts watch",
+    "watch-purchaseorder": "cds watch --open purchaseorder/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-inventorymovement": "cds watch --open inventorymovement/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -36,17 +43,20 @@
         "credentials": {
           "host": "localhost",
           "port": 5432,
-          "user": "root",
-          "password": "migue",
+          "user": "capuser",
+          "password": "cappass",
           "database": "MATERIALFLOW"
         }
       },
-      "auth":{
+      "auth": {
         "strategy": "mocked",
         "users": {
           "admin": {
             "password": "admin",
-            "roles": ["MaterialFlow.Read", "MaterialFlow.Write"]
+            "roles": [
+              "MaterialFlow.Read",
+              "MaterialFlow.Supervise"
+            ]
           }
         }
       }
@@ -84,6 +94,10 @@
     "app/materials",
     "app/categories",
     "app/suppliers",
-    "app/materials"
+    "app/materials",
+    "app/purchaseorder",
+    "app/purchaseorder",
+    "app/purchaseorder",
+    "app/inventorymovement"
   ]
 }

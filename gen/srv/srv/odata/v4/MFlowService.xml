@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="MFlowService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <Annotation Term="Core.Links">
+        <Collection>
+          <Record>
+            <PropertyValue Property="rel" String="author"/>
+            <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+          </Record>
+        </Collection>
+      </Annotation>
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Materials" EntityType="MFlowService.Materials">
+          <NavigationPropertyBinding Path="category" Target="Categories"/>
+          <NavigationPropertyBinding Path="supplier" Target="Suppliers"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="Materials"/>
+        </EntitySet>
+        <EntitySet Name="Categories" EntityType="MFlowService.Categories">
+          <NavigationPropertyBinding Path="SiblingEntity" Target="Categories"/>
+        </EntitySet>
+        <EntitySet Name="Suppliers" EntityType="MFlowService.Suppliers">
+          <NavigationPropertyBinding Path="SiblingEntity" Target="Suppliers"/>
+        </EntitySet>
+        <EntitySet Name="PurchaseOrder" EntityType="MFlowService.PurchaseOrder">
+          <NavigationPropertyBinding Path="supplier" Target="Suppliers"/>
+          <NavigationPropertyBinding Path="items" Target="PurchaseOrderItem"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="PurchaseOrder"/>
+        </EntitySet>
+        <EntitySet Name="PurchaseOrderItem" EntityType="MFlowService.PurchaseOrderItem">
+          <NavigationPropertyBinding Path="purchaseOrder" Target="PurchaseOrder"/>
+          <NavigationPropertyBinding Path="material" Target="Materials"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="PurchaseOrderItem"/>
+        </EntitySet>
+        <EntitySet Name="InventoryMovement" EntityType="MFlowService.InventoryMovement">
+          <NavigationPropertyBinding Path="material" Target="Materials"/>
+        </EntitySet>
+        <ActionImport Name="adjustStock" Action="MFlowService.adjustStock" EntitySet="Materials"/>
+      </EntityContainer>
+      <EntityType Name="Materials">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="100"/>
+        <Property Name="description" Type="Edm.String" MaxLength="255"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="unitPrice" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <NavigationProperty Name="category" Type="MFlowService.Categories">
+          <ReferentialConstraint Property="category_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="category_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="supplier" Type="MFlowService.Suppliers">
+          <ReferentialConstraint Property="supplier_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="supplier_ID" Type="Edm.Guid"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="MFlowService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="MFlowService.Materials"/>
+      </EntityType>
+      <EntityType Name="Categories">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="50"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="MFlowService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="MFlowService.Categories"/>
+      </EntityType>
+      <EntityType Name="Suppliers">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="100"/>
+        <Property Name="contactEmail" Type="Edm.String"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="MFlowService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="MFlowService.Suppliers"/>
+      </EntityType>
+      <EntityType Name="PurchaseOrder">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="orderNumber"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="orderNumber" Type="Edm.String" MaxLength="50" Nullable="false"/>
+        <NavigationProperty Name="supplier" Type="MFlowService.Suppliers">
+          <ReferentialConstraint Property="supplier_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="supplier_ID" Type="Edm.Guid"/>
+        <Property Name="orderDate" Type="Edm.Date"/>
+        <Property Name="status" Type="Edm.String" MaxLength="30" DefaultValue="Pending"/>
+        <Property Name="totalAmount" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <NavigationProperty Name="items" Type="Collection(MFlowService.PurchaseOrderItem)" Partner="purchaseOrder">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="MFlowService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="MFlowService.PurchaseOrder"/>
+      </EntityType>
+      <EntityType Name="PurchaseOrderItem">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <NavigationProperty Name="purchaseOrder" Type="MFlowService.PurchaseOrder" Partner="items">
+          <ReferentialConstraint Property="orderNumber" ReferencedProperty="orderNumber"/>
+        </NavigationProperty>
+        <Property Name="orderNumber" Type="Edm.String" MaxLength="50"/>
+        <NavigationProperty Name="material" Type="MFlowService.Materials">
+          <ReferentialConstraint Property="material_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="material_ID" Type="Edm.Guid"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="unitPrice" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <Property Name="totalPrice" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <Property Name="materialName" Type="Edm.String" MaxLength="100"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="MFlowService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="MFlowService.PurchaseOrderItem"/>
+      </EntityType>
+      <EntityType Name="InventoryMovement">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <NavigationProperty Name="material" Type="MFlowService.Materials">
+          <ReferentialConstraint Property="material_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="material_ID" Type="Edm.Guid"/>
+        <Property Name="movementType" Type="Edm.String" MaxLength="20"/>
+        <Property Name="quantity" Type="Edm.Int32"/>
+        <Property Name="referenceDoc" Type="Edm.String" MaxLength="50"/>
+        <Property Name="notes" Type="Edm.String" MaxLength="255"/>
+      </EntityType>
+      <EntityType Name="DraftAdministrativeData">
+        <Key>
+          <PropertyRef Name="DraftUUID"/>
+        </Key>
+        <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+        <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+      </EntityType>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Materials"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="MFlowService.Materials"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Categories"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="MFlowService.Categories"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Suppliers"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="MFlowService.Suppliers"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.PurchaseOrder"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="MFlowService.PurchaseOrder"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.PurchaseOrderItem"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="MFlowService.PurchaseOrderItem"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Materials"/>
+        <ReturnType Type="MFlowService.Materials"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Categories"/>
+        <ReturnType Type="MFlowService.Categories"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Suppliers"/>
+        <ReturnType Type="MFlowService.Suppliers"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.PurchaseOrder"/>
+        <ReturnType Type="MFlowService.PurchaseOrder"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Materials"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="MFlowService.Materials"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Categories"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="MFlowService.Categories"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.Suppliers"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="MFlowService.Suppliers"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MFlowService.PurchaseOrder"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="MFlowService.PurchaseOrder"/>
+      </Action>
+      <Action Name="adjustStock" IsBound="false">
+        <Parameter Name="materialID" Type="Edm.Guid"/>
+        <Parameter Name="adjustment" Type="Edm.String"/>
+        <ReturnType Type="MFlowService.Materials"/>
+      </Action>
+      <Annotations Target="MFlowService.Materials">
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+              <PropertyValue Property="Label" String="Material Name"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="description"/>
+              <PropertyValue Property="Label" String="Description"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="quantity"/>
+              <PropertyValue Property="Label" String="Quantity"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="unitPrice"/>
+              <PropertyValue Property="Label" String="Unit Price"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="General">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Name"/>
+                  <PropertyValue Property="Value" Path="name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Description"/>
+                  <PropertyValue Property="Value" Path="description"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Quantity"/>
+                  <PropertyValue Property="Value" Path="quantity"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Unit Price"/>
+                  <PropertyValue Property="Value" Path="unitPrice"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Category"/>
+                  <PropertyValue Property="Value" Path="category_ID"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Supplier"/>
+                  <PropertyValue Property="Value" Path="supplier_ID"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="GeneralInfo"/>
+              <PropertyValue Property="Label" String="General Information"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#General"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.EntityContainer/Materials">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="MFlowService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="MFlowService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="MFlowService.draftPrepare"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/category_ID">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Categories"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="category_ID"/>
+                  <PropertyValue Property="ValueListProperty" String="ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/supplier_ID">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Suppliers"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="supplier_ID"/>
+                  <PropertyValue Property="ValueListProperty" String="ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="contactEmail"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Materials/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories">
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="name"/>
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="GeneratedGroup1">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="name"/>
+                  <PropertyValue Property="Value" Path="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="GeneratedFacet1"/>
+              <PropertyValue Property="Label" String="General Information"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneratedGroup1"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.EntityContainer/Categories">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="MFlowService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="MFlowService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="MFlowService.draftPrepare"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Categories/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers">
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="name"/>
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="contactEmail"/>
+              <PropertyValue Property="Value" Path="contactEmail"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="GeneratedGroup1">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="name"/>
+                  <PropertyValue Property="Value" Path="name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="contactEmail"/>
+                  <PropertyValue Property="Value" Path="contactEmail"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="GeneratedFacet1"/>
+              <PropertyValue Property="Label" String="General Information"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneratedGroup1"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.EntityContainer/Suppliers">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="MFlowService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="MFlowService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="MFlowService.draftPrepare"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.Suppliers/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder">
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Order Number"/>
+              <PropertyValue Property="Value" Path="orderNumber"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Order Date"/>
+              <PropertyValue Property="Value" Path="orderDate"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Status"/>
+              <PropertyValue Property="Value" Path="status"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total Amount"/>
+              <PropertyValue Property="Value" Path="totalAmount"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="GeneratedGroup1">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Order Number"/>
+                  <PropertyValue Property="Value" Path="orderNumber"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Order Date"/>
+                  <PropertyValue Property="Value" Path="orderDate"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Status"/>
+                  <PropertyValue Property="Value" Path="status"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Total Amount"/>
+                  <PropertyValue Property="Value" Path="totalAmount"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="GeneratedFacet1"/>
+              <PropertyValue Property="Label" String="General Information"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneratedGroup1"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="GeneratedFacet2"/>
+              <PropertyValue Property="Label" String="Order Items Information"/>
+              <PropertyValue Property="Target" AnnotationPath="items/@UI.LineItem"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.EntityContainer/PurchaseOrder">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="MFlowService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="MFlowService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="MFlowService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/supplier_ID">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Suppliers"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="supplier_ID"/>
+                  <PropertyValue Property="ValueListProperty" String="ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="contactEmail"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="IsActiveEntity"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="HasActiveEntity"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/status">
+        <Annotation Term="Core.Computed" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrder/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem">
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Material Name"/>
+              <PropertyValue Property="Value" Path="materialName"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Cantidad"/>
+              <PropertyValue Property="Value" Path="quantity"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Precio Unitario"/>
+              <PropertyValue Property="Value" Path="unitPrice"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Precio Total"/>
+              <PropertyValue Property="Value" Path="totalPrice"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.EntityContainer/PurchaseOrderItem">
+        <Annotation Term="Common.DraftNode">
+          <Record Type="Common.DraftNodeType">
+            <PropertyValue Property="PreparationAction" String="MFlowService.draftPrepare"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="true"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="true"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/materialName">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Materials"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="materialName"/>
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="description"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.PurchaseOrderItem/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement">
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="movementType"/>
+              <PropertyValue Property="Value" Path="movementType"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="quantity"/>
+              <PropertyValue Property="Value" Path="quantity"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="referenceDoc"/>
+              <PropertyValue Property="Value" Path="referenceDoc"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="notes"/>
+              <PropertyValue Property="Value" Path="notes"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="GeneratedGroup1">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="movementType"/>
+                  <PropertyValue Property="Value" Path="movementType"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="quantity"/>
+                  <PropertyValue Property="Value" Path="quantity"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="referenceDoc"/>
+                  <PropertyValue Property="Value" Path="referenceDoc"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="notes"/>
+                  <PropertyValue Property="Value" Path="notes"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="GeneratedFacet1"/>
+              <PropertyValue Property="Label" String="General Information"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneratedGroup1"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.InventoryMovement/material_ID">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Materials"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="material_ID"/>
+                  <PropertyValue Property="ValueListProperty" String="ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="description"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="quantity"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="unitPrice"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="category_ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="supplier_ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="IsActiveEntity"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="HasActiveEntity"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData">
+        <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData/DraftUUID">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData/CreationDateTime">
+        <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData/CreatedByUser">
+        <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData/DraftIsCreatedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData/LastChangeDateTime">
+        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData/LastChangedByUser">
+        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData/InProcessByUser">
+        <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+      </Annotations>
+      <Annotations Target="MFlowService.DraftAdministrativeData/DraftIsProcessedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

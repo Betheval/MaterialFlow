@@ -1,0 +1,102 @@
+{
+  "name": "MaterialFlow",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js/cds-types": "^0.10.0",
+    "@cap-js/postgres": "^1.14.0",
+    "@sap/cds": "^8.9.4",
+    "@sap/cds-dk": "^8.5.0",
+    "@sap/hana-client": "^2.22.32",
+    "@sap/xsenv": "^3.0.0",
+    "@sap/xssec": "^4",
+    "axios": "^1.7.9",
+    "chai": "^5.2.0",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/cds-typer": "^0.34.0",
+    "@sap/cds-dk": "^8",
+    "@sap/ux-specification": "^1.124.17",
+    "@types/node": "^22.15.18",
+    "sqlite3": "^5.0.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "cds run",
+    "watch": "tsc -w",
+    "start:ts": "cds-ts watch",
+    "watch-purchaseorder": "cds watch --open purchaseorder/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-inventorymovement": "cds watch --open inventorymovement/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "postgres",
+        "impl": "@cap-js/postgres",
+        "credentials": {
+          "host": "localhost",
+          "port": 5432,
+          "user": "capuser",
+          "password": "cappass",
+          "database": "MATERIALFLOW"
+        }
+      },
+      "auth": {
+        "strategy": "mocked",
+        "users": {
+          "admin": {
+            "password": "admin",
+            "roles": [
+              "MaterialFlow.Read",
+              "MaterialFlow.Supervise"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "engines": {
+    "node": "^16.15"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "es2020": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
+    },
+    "globals": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true,
+      "DELETE": true,
+      "CREATE": true,
+      "DROP": true,
+      "CDL": true,
+      "CQL": true,
+      "CXL": true,
+      "cds": true
+    },
+    "rules": {
+      "no-console": "off",
+      "require-atomic-updates": "off"
+    }
+  },
+  "sapux": [
+    "app/materials",
+    "app/categories",
+    "app/suppliers",
+    "app/materials",
+    "app/purchaseorder",
+    "app/purchaseorder",
+    "app/purchaseorder",
+    "app/inventorymovement"
+  ]
+}

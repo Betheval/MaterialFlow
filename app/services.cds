@@ -4,4 +4,6 @@ using from './suppliers/annotations';
 
 using from './materials/annotations';
 
-using from './accessmenu/annotations';
+using from './purchaseorder/annotations';
+
+using from './inventorymovement/annotations';

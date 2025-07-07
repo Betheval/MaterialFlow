@@ -1,102 +1,124 @@
-using { Materials as m, Suppliers as s, Categories as c } from '../db/schema';
-service MFlowService @(requries:'authenticated-user') {
-   
-    entity  Materials @(restrict: [
-        {
-            grant: ['*'],
-            to   : 'MaterialFlow.Read'
+using {
+    Materials          as m,
+    Suppliers          as s,
+    Categories         as c,
+    PurchaseOrders     as po,
+    PurchaseOrderItems as poi,
+    InventoryMovement  as im
+} from '../db/schema';
+
+service MFlowService @(requires: 'authenticated-user') {
+    @odata.draft.enabled
+    entity Materials @(restrict: [{
+        grant: ['*'],
+        to   : 'MaterialFlow.Read'
+    }, ])                    as
+        projection on m {
+            *,
+            category.name as categoryName,
+            supplier.name as supplierName
+        };
+
+    @odata.draft.enabled
+    entity Categories @(restrict: [{
+        grant: ['*'],
+        to   : 'MaterialFlow.Read'
+    }, ])                    as projection on c;
+
+    @odata.draft.enabled
+    entity Suppliers @(restrict: [{
+        grant: ['*'],
+        to   : 'MaterialFlow.Read'
+    }, ])                    as projection on s;
+
+    @odata.draft.enabled
+    entity PurchaseOrder     as
+        projection on po {
+            *
         }
-    ]) as projection on m;
-    entity Categories @(restrict: [
-        {
-            grant: ['*'],
-            to   : 'MaterialFlow.Read'
-        },
-    ]) as projection on c;
-    entity Suppliers @(restrict: [
-        {
-            grant: ['*'],
-            to   : 'MaterialFlow.Read'
-        },
-    ]) as projection on s;
+        actions {
+            action approveOrder() returns PurchaseOrder;
+            action cancelOrder()  returns PurchaseOrder;
+        };
 
-    //Actions for Materials
-    @requires: 'MaterialFlow.Write'
-    action adjustStock(materialID: UUID, adjustment: String) returns Materials;
-    action calculateTotalValue(materialID: UUID) returns Decimal(10,2);
-    @requires: 'MaterialFlow.Write'
-    action addMaterial(name: String(100), description: String(255), quantity: Integer, unitPrice: Decimal(10,2), categoryID: UUID, supplierID: UUID) returns UUID;
-    @requires: 'MaterialFlow.Write'
-    action updateMaterialPrice(materialID: UUID, newPrice: Decimal(10,2)) returns Boolean;
-    @requires: 'MaterialFlow.Write'
-    action deleteMaterial(materialID: UUID) returns Boolean;
-    action getSupplierMaterials(supplierID: UUID) returns array of Materials;
-    @requires: 'MaterialFlow.Write'
-    action changeSupplier(materialID: UUID, supplierID: UUID) returns Materials;
 
-    //Actions for Categories
-    @requires: 'MaterialFlow.Write'
-    action addCategory(name: String(100)) returns UUID;
-    
-    //Actions for Suppliers
-    @requires: 'MaterialFlow.Write'
-    action addSupplier(name: String(100), email: String(100)) returns UUID;
+    entity PurchaseOrderItem as
+        projection on poi {
+            material.name as materialName,
+            material,
+            *
+        };
+
+    entity InventoryMovement as projection on im;
+    //CHATBOT
+
+    action chatWithLlama(message : String) returns String;
+
 }
 
+annotate MFlowService.Materials with @(UI.LineItem: [
+    {
+        $Type: 'UI.DataField',
+        Value: name,
+        Label: 'Material Name',
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: description,
+        Label: 'Description',
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: quantity,
+        Label: 'Quantity',
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: unitPrice,
+        Label: 'Unit Price',
+    }
+]);
+
+annotate MFlowService.Categories with @(UI.LineItem: [{
+    $Type: 'UI.DataField',
+    Value: name,
+    Label: 'Category Name',
+}]);
+
+annotate MFlowService.Suppliers with @(UI.LineItem: [
+    {
+        $Type: 'UI.DataField',
+        Value: name,
+        Label: 'Supplier Name',
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: contactEmail,
+        Label: 'Contact Email',
+    }
+]);
+
+
 annotate MFlowService.Materials with @(
-    UI.LineItem: [
-        {
-            $Type : 'UI.DataField',
-            Value : name,
-            Label : 'Material Name',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : description,
-            Label : 'Description',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : quantity,
-            Label : 'Quantity',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : unitPrice,
-            Label : 'Unit Price',
-        }
-    ]
+    Capabilities.Insertable: true,
+    Capabilities.Updatable : true,
+    Capabilities.Deletable : true
 );
 
 annotate MFlowService.Categories with @(
-    UI.LineItem: [
-        {
-            $Type : 'UI.DataField',
-            Value : name,
-            Label : 'Category Name',
-        }
-    ]
+    Capabilities.Insertable: true,
+    Capabilities.Updatable : true,
+    Capabilities.Deletable : true
 );
 
 annotate MFlowService.Suppliers with @(
-    UI.LineItem: [
-        {
-            $Type : 'UI.DataField',
-            Value : name,
-            Label : 'Supplier Name',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : contactEmail,
-            Label : 'Contact Email',
-        }
-    ]
+    Capabilities.Insertable: true,
+    Capabilities.Updatable : true,
+    Capabilities.Deletable : true
 );
 
-annotate MFlowService.Materials with @(Capabilities.Insertable : true);
-annotate MFlowService.Categories with @(Capabilities.Insertable : true);
-annotate MFlowService.Suppliers with @(Capabilities.Insertable : true);
-
-
-
-
+annotate MFlowService.PurchaseOrderItem with @(
+    Capabilities.Insertable: true,
+    Capabilities.Updatable : true,
+    Capabilities.Deletable : true
+);

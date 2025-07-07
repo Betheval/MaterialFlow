@@ -4,15 +4,19 @@ annotate service.Suppliers with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'name',
+            Label : 'Supllier Name',
             Value : name,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'contactEmail',
+            Label : 'Contact Email',
             Value : contactEmail,
         },
-    ]
+    ],
+    UI.SelectionFields : [
+        name,
+        contactEmail,
+    ],
 );
 annotate service.Suppliers with @(
     UI.FieldGroup #GeneratedGroup1 : {
@@ -20,14 +24,14 @@ annotate service.Suppliers with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'name',
+                Label : 'Supplier Name',
                 Value : name,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'contactEmail',
+                Label : 'Contact Email',
                 Value : contactEmail,
-            },
+            }, 
         ],
     },
     UI.Facets : [
@@ -39,3 +43,8 @@ annotate service.Suppliers with @(
         },
     ]
 );
+annotate service.Suppliers with {
+    name @Common.Label : 'Supplier Name';
+    contactEmail @Common.Label : 'Contact Email';
+};
+

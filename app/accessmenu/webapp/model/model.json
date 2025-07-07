@@ -15,6 +15,16 @@
 			"title": "Categories",
 			"icon": "sap-icon://group",
 			"key": "page3"
+		},
+		{
+			"title": "Purchase Orders",
+			"icon": "sap-icon://my-sales-order",
+			"key": "page4"
+		},
+		{
+			"title": "Inventory Movements",
+			"icon": "sap-icon://inventory",
+			"key": "page5"
 		}
 	]
 }
