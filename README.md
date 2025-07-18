@@ -11,6 +11,41 @@ MaterialFlow is a basic application developed with SAP CAP and Fiori Elements fo
 - **Virtual Assistant:** Integrated chatbot for contextual help.
 - **Fiori Elements Applications** for each main entity.
 
+## Virtual Assistant (Agent)
+
+MaterialFlow includes an integrated virtual assistant (agent) to help users interact with the system through natural language. The agent supports several skills, such as:
+
+- Checking material stock
+- Creating new materials
+- Updating material prices
+- Viewing recent purchase orders
+- Approving or canceling orders
+
+The chatbot is available in the main menu and can be used to perform actions, get contextual help, and receive notifications.
+
+### How it works
+
+- The assistant is accessible from the right panel in the main menu.
+- Users can type questions or commands in the chat input area.
+- The agent interprets the request and executes the corresponding action using backend APIs.
+- Responses and notifications are displayed in the chat panel.
+
+### Extending Agent Skills
+
+You can add new skills (tools) to the agent by implementing backend functions and exposing them via CAP services.  
+Typical skills include supplier and category creation, inventory queries, and reporting.
+
+**Example agent tool functions:**
+- `getMaterialStock`
+- `createMaterial`
+- `updateMaterialPrice`
+- `getRecentPurchaseOrders`
+- `approveOrCancelOrder`
+- `createSupplier`
+- `createCategory`
+
+For more details, see the `/srv` folder and the chatbot integration in `/app/accessmenu/webapp/controller/App.controller.js`.
+
 ## Project Structure
 
 ```
@@ -33,7 +68,6 @@ MaterialFlow is a basic application developed with SAP CAP and Fiori Elements fo
 ├── resources/          # Static resources (images, etc.)
 ├── package.json
 ├── mta.yaml
-├── Dockerfile
 └── README.md
 ```
 
@@ -77,15 +111,6 @@ MaterialFlow is a basic application developed with SAP CAP and Fiori Elements fo
 
 The backend exposes OData endpoints and several custom actions for operations such as adjusting stock, approving orders, changing suppliers, etc.  
 See the **API** section in this README for usage examples.
-
-## Docker Deployment
-
-You can run the application in a Docker container:
-
-```sh
-docker build -t materialflow .
-docker run -p 4004:4004 materialflow
-```
 
 ## Contributions
 

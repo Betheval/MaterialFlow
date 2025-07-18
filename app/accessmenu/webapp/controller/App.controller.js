@@ -76,14 +76,14 @@ sap.ui.define(
         oModel.setProperty("/chat", aChat);
 
         try {
-          const oResponse = await fetch("/odata/v4/mflow/chatWithLlama", {
+          const oResponse = await fetch("http://localhost:8000/ask", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: sMessage }),
+            body: JSON.stringify({ question: sMessage }),
           });
           const oData = await oResponse.json();
           // Mostrar respuesta del bot
-          aChat.push({ sender: "Bot", message: oData.value.response });
+          aChat.push({ sender: "Bot", message: oData.answer.output});
           oModel.setProperty("/chat", aChat);
         } catch (e) {
           aChat.push({
