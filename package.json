@@ -14,26 +14,32 @@
     "@sap/xsenv": "^3.0.0",
     "@sap/xssec": "^4",
     "axios": "^1.10.0",
-    "chai": "^5.2.0",
-    "express": "^4"
+    "express": "^4",
+    "mbt": "^1.2.34"
   },
   "devDependencies": {
+    "@cap-js/cds-test": "^0.4.0",
     "@cap-js/cds-typer": "^0.34.0",
     "@sap/cds-dk": "^8",
-    "@sap/ux-specification": "^1.124.17",
+    "@sap/ux-specification": "^1.136.4",
     "@types/node": "^22.15.18",
+    "jest": "^30.0.5",
     "sqlite3": "^5.0.4",
+    "supertest": "^7.1.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
   "scripts": {
     "build": "tsc",
+    "test": "jest --coverage --forceExit",
     "start": "cds run",
     "watch": "tsc -w",
     "start:ts": "cds-ts watch",
     "watch-purchaseorder": "cds watch --open purchaseorder/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-inventorymovement": "cds watch --open inventorymovement/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-inventorymovement": "cds watch --open inventorymovement/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-material": "cds watch --open material/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-materials": "cds watch --open materials/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -59,7 +65,8 @@
             ]
           }
         }
-      }
+      },
+      "html5-runtime": true
     }
   },
   "engines": {
@@ -98,6 +105,8 @@
     "app/purchaseorder",
     "app/purchaseorder",
     "app/purchaseorder",
-    "app/inventorymovement"
+    "app/inventorymovement",
+    "app/material",
+    "app/materials"
   ]
 }

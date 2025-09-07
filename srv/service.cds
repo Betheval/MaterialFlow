@@ -13,11 +13,7 @@ service MFlowService @(requires: 'authenticated-user') {
         grant: ['*'],
         to   : 'MaterialFlow.Read'
     }, ])                    as
-        projection on m {
-            *,
-            category.name as categoryName,
-            supplier.name as supplierName
-        };
+        projection on m;
 
     @odata.draft.enabled
     entity Categories @(restrict: [{
@@ -56,47 +52,18 @@ service MFlowService @(requires: 'authenticated-user') {
 
 }
 
-annotate MFlowService.Materials with @(UI.LineItem: [
-    {
-        $Type: 'UI.DataField',
-        Value: name,
-        Label: 'Material Name',
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: description,
-        Label: 'Description',
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: quantity,
-        Label: 'Quantity',
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: unitPrice,
-        Label: 'Unit Price',
-    }
-]);
 
-annotate MFlowService.Categories with @(UI.LineItem: [{
-    $Type: 'UI.DataField',
-    Value: name,
-    Label: 'Category Name',
-}]);
-
-annotate MFlowService.Suppliers with @(UI.LineItem: [
-    {
-        $Type: 'UI.DataField',
-        Value: name,
-        Label: 'Supplier Name',
+annotate MFlowService.Materials with @(
+    Common.SideEffects: {
+        $Type : 'Common.SideEffectsType',
+        SourceProperties : [
+            supplier_ID,category_ID
+        ],
+        TargetProperties : [
+            'supplierName','categoryName'
+        ],
     },
-    {
-        $Type: 'UI.DataField',
-        Value: contactEmail,
-        Label: 'Contact Email',
-    }
-]);
+);
 
 
 annotate MFlowService.Materials with @(

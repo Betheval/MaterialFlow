@@ -1,0 +1,7 @@
+<SideNavigation id="_IDGenSideNavigation" xmlns="sap.tnt" xmlns:core="sap.ui.core" expanded="true" selectedKey="{/selectedKey}" itemSelect="onItemSelect">
+	<NavigationList id="_IDGenNavigationList1" items="{path: '/navigation'}">
+		<core:Fragment
+				fragmentName="accessmenu.view.NavigationList"
+				type="XML" />
+	</NavigationList>
+</SideNavigation>

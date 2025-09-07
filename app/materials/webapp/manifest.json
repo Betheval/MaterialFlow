@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.11.5",
-      "toolsId": "f589d004-bf7c-4f27-b4db-268476fc511b"
+      "toolsId": "aaf9f869-fbc5-4c72-b1d9-7d047bec943a"
     },
     "dataSources": {
       "mainService": {
@@ -46,12 +46,21 @@
   "sap.ui5": {
     "flexEnabled": true,
     "dependencies": {
-      "minUI5Version": "1.131.1",
+      "minUI5Version": "1.139.0",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
         "sap.ushell": {},
         "sap.fe.templates": {}
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "materials.ext.ListReportExt"
+          }
+        }
       }
     },
     "contentDensities": {
@@ -101,22 +110,15 @@
         "MaterialsList": {
           "type": "Component",
           "id": "MaterialsList",
-          "viewLevel": 1,
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
               "contextPath": "/Materials",
-              "variantManagement": "None",
+              "variantManagement": "Page",
               "navigation": {
                 "Materials": {
                   "detail": {
                     "route": "MaterialsObjectPage"
-                  }
-                }
-              },
-              "controlConfiguration": {
-                "@com.sap.vocabularies.UI.v1.LineItem": {
-                  "actions": {
                   }
                 }
               },
@@ -127,13 +129,11 @@
         "MaterialsObjectPage": {
           "type": "Component",
           "id": "MaterialsObjectPage",
-          "viewLevel": 2,
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Materials",
-              "editable": true
+              "contextPath": "/Materials"
             }
           }
         }

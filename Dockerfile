@@ -1,5 +1,5 @@
 #Usar imagen de node
-FROM node:16
+FROM node:18
 #Crear directorio de trabajo
 WORKDIR /app
 #Copiar el package.json y package-lock.json

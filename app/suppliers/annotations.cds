@@ -1,3 +1,10 @@
+annotate service.Suppliers with @(
+    Common.SideEffects: {
+        $Type: 'Common.SideEffectsType',
+        SourceProperties: ['ID'], // o el campo clave real
+        TargetProperties: ['name', 'contactEmail']
+    }
+);
 using MFlowService as service from '../../srv/service';
 
 annotate service.Suppliers with @(
@@ -47,4 +54,3 @@ annotate service.Suppliers with {
     name @Common.Label : 'Supplier Name';
     contactEmail @Common.Label : 'Contact Email';
 };
-

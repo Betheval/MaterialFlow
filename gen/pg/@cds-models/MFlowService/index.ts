@@ -3,7 +3,7 @@ import * as _ from './..';
 import * as __ from './../_';
 
 export default class {
-  declare static readonly adjustStock: typeof adjustStock;
+  declare static readonly chatWithLlama: typeof chatWithLlama;
 }
 
 export function _MaterialAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
@@ -17,10 +17,10 @@ export function _MaterialAspect<TBase extends new (...args: any[]) => object>(Ba
     declare description?: string | null
     declare quantity?: number | null
     declare unitPrice?: number | null
-    declare category?: __.Association.to<Category> | null
     declare category_ID?: string | null
-    declare supplier?: __.Association.to<Supplier> | null
+    declare category?: __.Association.to<Category> | null
     declare supplier_ID?: string | null
+    declare supplier?: __.Association.to<Supplier> | null
     static readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
     declare static readonly keys: __.KeysOf<Material>;
     declare static readonly elements: __.ElementsOf<Material>;
@@ -94,7 +94,26 @@ export function _PurchaseOrderAspect<TBase extends new (...args: any[]) => objec
     static readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
     declare static readonly keys: __.KeysOf<PurchaseOrder>;
     declare static readonly elements: __.ElementsOf<PurchaseOrder>;
-    declare static readonly actions: globalThis.Record<never, never>;
+    declare static readonly actions: {
+      approveOrder:  {
+        // positional
+        (): PurchaseOrder
+        // named
+        ({}: globalThis.Record<never, never>): PurchaseOrder
+        // metadata (do not use)
+        __parameters: globalThis.Record<never, never>, __returns: PurchaseOrder
+        kind: 'action'
+      }
+      cancelOrder:  {
+        // positional
+        (): PurchaseOrder
+        // named
+        ({}: globalThis.Record<never, never>): PurchaseOrder
+        // metadata (do not use)
+        __parameters: globalThis.Record<never, never>, __returns: PurchaseOrder
+        kind: 'action'
+      }
+    };
   };
 }
 export class PurchaseOrder extends _PurchaseOrderAspect(__.Entity) {static drafts: __.DraftOf<PurchaseOrder>}
@@ -106,6 +125,9 @@ Object.defineProperty(PurchaseOrder_, 'name', { value: 'MFlowService.PurchaseOrd
 
 export function _PurchaseOrderItemAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
   return class PurchaseOrderItem extends Base {
+    declare materialName?: string | null
+    declare material?: __.Association.to<Material> | null
+    declare material_ID?: string | null
     declare createdAt?: __.CdsTimestamp | null
     declare createdBy?: _.User | null
     declare modifiedAt?: __.CdsTimestamp | null
@@ -113,12 +135,9 @@ export function _PurchaseOrderItemAspect<TBase extends new (...args: any[]) => o
     declare ID?: __.Key<string>
     declare purchaseOrder?: __.Association.to<PurchaseOrder> | null
     declare orderNumber?: string | null
-    declare material?: __.Association.to<Material> | null
-    declare material_ID?: string | null
     declare quantity?: number | null
     declare unitPrice?: number | null
     declare totalPrice?: number | null
-    declare materialName?: string | null
     static readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
     declare static readonly keys: __.KeysOf<PurchaseOrderItem>;
     declare static readonly elements: __.ElementsOf<PurchaseOrderItem>;
@@ -141,10 +160,11 @@ export function _InventoryMovementAspect<TBase extends new (...args: any[]) => o
     declare modifiedBy?: _.User | null
     declare material?: __.Association.to<Material> | null
     declare material_ID?: string | null
+    declare purchaseOrder?: __.Association.to<PurchaseOrder> | null
+    declare orderNumber?: string | null
     declare movementType?: string | null
     declare quantity?: number | null
-    declare referenceDoc?: string | null
-    declare notes?: string | null
+    declare movementDate?: __.CdsDateTime | null
     static readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
     declare static readonly keys: __.KeysOf<InventoryMovement>;
     declare static readonly elements: __.ElementsOf<InventoryMovement>;
@@ -158,12 +178,12 @@ export class InventoryMovement_ extends Array<InventoryMovement> {$count?: numbe
 Object.defineProperty(InventoryMovement_, 'name', { value: 'MFlowService.InventoryMovement' })
 
 
-export declare const adjustStock:  {
+export declare const chatWithLlama:  {
   // positional
-  (materialID: string | null, adjustment: string | null): globalThis.Promise<Material | null> | Material | null
+  (message: string | null): globalThis.Promise<string | null> | string | null
   // named
-  ({materialID, adjustment}: {materialID?: string | null, adjustment?: string | null}): globalThis.Promise<Material | null> | Material | null
+  ({message}: {message?: string | null}): globalThis.Promise<string | null> | string | null
   // metadata (do not use)
-  __parameters: {materialID?: string | null, adjustment?: string | null}, __returns: globalThis.Promise<Material | null> | Material | null
+  __parameters: {message?: string | null}, __returns: globalThis.Promise<string | null> | string | null
   kind: 'action'
 }

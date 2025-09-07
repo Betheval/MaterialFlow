@@ -1,53 +1,77 @@
 using MFlowService as service from '../../srv/service';
-
+annotate Materials with @Capabilities : { Insertable : true, Updatable : true, Deletable : true 
+};
 annotate service.Materials with {
-  category_ID @Common.ValueList: {
-    CollectionPath : 'Categories',
-    Parameters : [
-      { $Type : 'Common.ValueListParameterInOut',   LocalDataProperty : 'category_ID', ValueListProperty : 'ID'   },
-      { $Type : 'Common.ValueListParameterDisplayOnly',               ValueListProperty : 'name'                }
-    ]
-  };
-
-  supplier_ID @Common.ValueList: {
-    CollectionPath : 'Suppliers',
-    Parameters : [
-      { $Type : 'Common.ValueListParameterInOut',   LocalDataProperty : 'supplier_ID', ValueListProperty : 'ID'   },
-      { $Type : 'Common.ValueListParameterDisplayOnly',               ValueListProperty : 'name'                },
-      { $Type : 'Common.ValueListParameterDisplayOnly',               ValueListProperty : 'contactEmail'        }
-    ]
-  };
-  name @Common.ValueList:{
-    CollectionPath : 'Materials',
-    Parameters : [
-      { $Type : 'Common.ValueListParameterInOut',   LocalDataProperty : 'name', ValueListProperty : 'name'   },
-      { $Type : 'Common.ValueListParameterDisplayOnly',               ValueListProperty : 'description'        }
-    ]
-  }
+    category_ID @Common.ValueList: {
+        CollectionPath : 'Categories',
+        Parameters : [
+            { $Type : 'Common.ValueListParameterInOut',   LocalDataProperty : 'category_ID', ValueListProperty : 'ID'   },
+            { $Type : 'Common.ValueListParameterDisplayOnly',               ValueListProperty : 'name'                }
+        ]
+    };
+    supplier_ID @Common.ValueList: {
+        CollectionPath : 'Suppliers',
+        Parameters : [
+            { $Type : 'Common.ValueListParameterInOut',   LocalDataProperty : 'supplier_ID', ValueListProperty : 'ID'   },
+            { $Type : 'Common.ValueListParameterDisplayOnly',               ValueListProperty : 'name'                }
+        ]
+    };
 };
 
-// Habilitar operaciones CRUD estándar
-annotate service.Materials with @(Capabilities.Insertable : true, Capabilities.Updatable : true, Capabilities.Deletable : true,
+
+annotate service.Materials with @(
+    UI.LineItem : [
+        {
+            $Type : 'UI.DataField',
+            Value : name,
+            Label : 'Material Name',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : description,
+            Label : 'Description',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : quantity,
+            Label : 'Quantity',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : unitPrice,
+            Label : 'Unit Price',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : category_ID,
+            Label : 'Category',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : supplier_ID,
+            Label : 'Supplier',
+        },
+        
+    ],
     UI.SelectionFields : [
         name,
-        supplier_ID,
         category_ID,
-    ]);
-
+        supplier_ID,
+    ],
+);
 annotate service.Materials with {
-    name @Common.Label : 'Material Name';
+    name        @Common.Label : 'Material Name';
     category_ID @Common.Label : 'Category';
     supplier_ID @Common.Label : 'Supplier';
 };
 
-// FieldGroup y Facet para ObjectPage editable
 annotate service.Materials with @(
-    UI.FieldGroup #General : {
+    UI.FieldGroup #GeneratedGroup1 : {
         $Type : 'UI.FieldGroupType',
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'Name',
+                Label : 'Material Name',
                 Value : name,
             },
             {
@@ -80,44 +104,9 @@ annotate service.Materials with @(
     UI.Facets : [
         {
             $Type : 'UI.ReferenceFacet',
-            ID : 'GeneralInfo',
+            ID : 'GeneratedFacet1',
             Label : 'General Information',
-            Target : '@UI.FieldGroup#General',
+            Target : '@UI.FieldGroup#GeneratedGroup1',
         },
-    ],
-);
-
-annotate service.Materials with @(
-    UI.LineItem : [
-        {
-            $Type : 'UI.DataField',
-            Value : name,
-            Label : 'Name',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : description,
-            Label : 'Description',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : quantity,
-            Label : 'Quantity',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : unitPrice,
-            Label : 'Unit Price',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : categoryName,
-            Label : 'Category',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : supplierName,
-            Label : 'Supplier',
-        },
-    ],
+    ]
 );

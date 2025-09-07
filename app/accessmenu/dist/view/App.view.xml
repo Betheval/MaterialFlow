@@ -1,0 +1,99 @@
+<mvc:View controllerName="accessmenu.controller.App"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+    xmlns:tnt="sap.tnt">
+<tnt:ToolPage id="page">
+		<tnt:header>
+			<f:ShellBar id="_IDGenShellBar1"
+				showMenuButton="true"
+				showCopilot="true"
+				copilotPressed="onCopilotPressed"
+				showNotifications="true"
+				notificationsPressed="onShowNotifications"
+				menuButtonPressed="onMenuButtonPress">
+				<f:menu>
+					<Menu id="_IDGenMenu">
+						<MenuItem id="_IDGenMenuItem" text="Flight booking" icon="sap-icon://flight" />
+						<MenuItem id="_IDGenMenuItem1" text="Car rental" icon="sap-icon://car-rental" />
+					</Menu>
+				</f:menu>
+				<f:profile>
+					<Avatar id="_IDGenAvatar" initials="UI"/>
+				</f:profile>
+				<f:searchManager>
+					<f:SearchManager id="_IDGenSearchManager"/>
+				</f:searchManager>
+			</f:ShellBar>
+		</tnt:header>
+		<tnt:sideContent>
+			<core:Fragment
+					fragmentName="accessmenu.view.SideNavigation"
+					type="XML" />
+		</tnt:sideContent>
+		<tnt:mainContents>
+
+
+			<l:Splitter id="mainSplitter" height="100%">
+
+			<NavContainer id="pageContainer" initialPage="page1" height="100%" width="100%">
+				<pages>
+					<ScrollContainer id="page1" horizontal="false" vertical="true" height="100%">
+						<core:ComponentContainer id="pageMaterials" name="materials" async="true" manifest="true" component="materials" height="900px" width="100%"></core:ComponentContainer>
+					</ScrollContainer>
+					<ScrollContainer id="page2" horizontal="false" vertical="true" height="100%">
+						<core:ComponentContainer id="pageSuppliers" name="suppliers" async="true" manifest="true" component="suppliers" height="900px" width="100%"></core:ComponentContainer>
+					</ScrollContainer>
+					<ScrollContainer id="page3" horizontal="false" vertical="true" height="100%">
+						<core:ComponentContainer id="pageCategories" name="categories" async="true" manifest="true" component="categories" height="900px" width="100%"></core:ComponentContainer>
+					</ScrollContainer>
+					<ScrollContainer id="page4" horizontal="false" vertical="true" height="100%">
+						<core:ComponentContainer id="pagePurchaseOrder" name="purchaseorder" async="true" manifest="true" component="purchaseorder" height="900px" width="100%"></core:ComponentContainer>
+					</ScrollContainer>
+					<ScrollContainer id="page5" horizontal="false" vertical="true" height="100%">
+						<core:ComponentContainer id="pageinventoryMovement" name="inventorymovement" async="true" manifest="true" component="inventorymovement" height="900px" width="100%"></core:ComponentContainer>
+					</ScrollContainer>
+				</pages>
+			</NavContainer>
+			<Panel id="chatbotPanel"
+				width="95%"
+				expandable="true"
+				expanded="true"
+				headerText="Virtual Assistant"
+				height="100%"
+				class="chatbotPanel sapUiSmallMarginBegin sapUiNoContentPadding">
+					<FlexBox id="_IDGenFlexBox" direction="Column" height="100%" class="chatbotVBox">
+						<List id="chatList"
+							items="{chatModel>/chat}"
+							growing="true"
+							growingScrollToLoad="true"
+						>
+							<layoutData>
+								<FlexItemData id="_IDGenFlexItemData" growFactor="1"/>
+							</layoutData>
+							<CustomListItem id="_IDGenCustomListItem">
+								<HBox id="_IDGenHBox1">
+									<Text id="_IDGenText" text="{chatModel>sender}: " class="chatSender sapUiTinyMarginEnd" />
+									<Text id="_IDGenText1" text="{chatModel>message}" class="chatMessage"/>
+								</HBox>
+							</CustomListItem>
+						</List>
+						<HBox id="_IDGenHBox2" alignItems="Center" class="chatInputBar sapUiTinyMarginTop sapUiSmallMargin">
+							<TextArea id="chatInput"
+									width="600px"
+									growing="false"
+									rows="2"
+									placeholder="Write your message here..."/>
+							<Button id="sendChatButton"
+									text="Enviar"
+									type="Emphasized"
+									press="onSendChat"/>
+						</HBox>
+					</FlexBox>
+				</Panel>
+			</l:Splitter>
+		</tnt:mainContents>
+	</tnt:ToolPage>
+</mvc:View>

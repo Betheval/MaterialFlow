@@ -41,19 +41,18 @@ sap.ui.define(
       onItemSelect: function (oEvent) {
         var item = oEvent.getParameter("item");
         var key = item.getKey();
+        var oView = this.getView();
+
+        sap.ui.core.routing.HashChanger.getInstance().replaceHash("");
+
         var pageContainer = this.byId("pageContainer");
+        pageContainer.to(oView.createId(key));
 
-        // Navegar a la página correspondiente
-        pageContainer.to(this.getView().createId(key));
-
-        // Cargar el componente correspondiente si es necesario
-        var componentContainer = this.byId("pageMaterials");
-        if (componentContainer && !componentContainer.getComponentInstance()) {
-          sap.ui.core.Component.create({
-            name: key,
-          }).then(function (oComponent) {
-            componentContainer.setComponent(oComponent);
-          });
+        var oModel = oView.getModel();
+        if (oModel && oModel.setProperty) {
+          try {
+            oModel.setProperty("/selectedKey", key);
+          } catch (e) {}
         }
       },
       onMenuButtonPress: function () {

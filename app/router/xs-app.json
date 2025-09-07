@@ -1,0 +1,20 @@
+{
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/srv/(.*)$",
+      "destination": "srv-api",
+      "csrfProtection": false
+    },
+    {
+      "source": "^/app/(.*)$",
+      "target": "$1",
+      "localDir": "resources"
+    },
+    {
+      "source": "/(.*)",
+      "target": "/index.html",
+      "localDir": "resources"
+    }
+  ]
+}

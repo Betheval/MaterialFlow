@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Dialog id="notificationDialog" title="Notificaciones" stretch="true" afterClose="onCloseNotificationDialog">
+        <NotificationListGroup
+            id="notificationListGroup"
+            title="Notificaciones"
+            showEmptyGroup="true"
+            items="{
+                path: 'notifications>/notifications'
+            }">
+            <NotificationListItem id="_IDGenNotificationListItem2"
+                title="{notifications>title}"
+                description="{notifications>description}"
+                datetime="{notifications>datetime}"
+                close="onNotificationClose"
+                priority="{notifications>priority}"
+                authorName="{notifications>authorName}" />
+        </NotificationListGroup>
+        <endButton>
+            <Button id="_IDGenButton1" text="Cerrar" press="onCloseNotificationDialog"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

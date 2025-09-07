@@ -2,6 +2,9 @@
   "definitions": {
     "Materials": {
       "kind": "entity",
+      "@Capabilities.Insertable": true,
+      "@Capabilities.Updatable": true,
+      "@Capabilities.Deletable": true,
       "includes": [
         "managed",
         "cuid"
@@ -79,23 +82,43 @@
           "precision": 10,
           "scale": 2
         },
+        "category_ID": {
+          "type": "cds.UUID"
+        },
         "category": {
           "type": "cds.Association",
           "target": "Categories",
-          "keys": [
+          "on": [
             {
               "ref": [
+                "category_ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "category",
                 "ID"
               ]
             }
           ]
         },
+        "supplier_ID": {
+          "type": "cds.UUID"
+        },
         "supplier": {
           "type": "cds.Association",
           "target": "Suppliers",
-          "keys": [
+          "on": [
             {
               "ref": [
+                "supplier_ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "supplier",
                 "ID"
               ]
             }
@@ -718,13 +741,47 @@
         "material": {
           "type": "cds.Association",
           "target": "Materials",
-          "keys": [
+          "on": [
             {
               "ref": [
+                "material",
                 "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self",
+                "material_ID"
               ]
             }
           ]
+        },
+        "material_ID": {
+          "type": "cds.UUID"
+        },
+        "purchaseOrder": {
+          "type": "cds.Association",
+          "target": "PurchaseOrders",
+          "on": [
+            {
+              "ref": [
+                "purchaseOrder",
+                "orderNumber"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self",
+                "orderNumber"
+              ]
+            }
+          ]
+        },
+        "orderNumber": {
+          "type": "cds.String",
+          "length": 50
         },
         "movementType": {
           "type": "cds.String",
@@ -733,13 +790,8 @@
         "quantity": {
           "type": "cds.Integer"
         },
-        "referenceDoc": {
-          "type": "cds.String",
-          "length": 50
-        },
-        "notes": {
-          "type": "cds.String",
-          "length": 255
+        "movementDate": {
+          "type": "cds.DateTime"
         }
       }
     },
@@ -759,6 +811,22 @@
           "to": "MaterialFlow.Read"
         }
       ],
+      "@Common.SideEffects.$Type": "Common.SideEffectsType",
+      "@Common.SideEffects.SourceProperties": [
+        {
+          "=": "supplier_ID"
+        },
+        {
+          "=": "category_ID"
+        }
+      ],
+      "@Common.SideEffects.TargetProperties": [
+        "supplierName",
+        "categoryName"
+      ],
+      "@Capabilities.Insertable": true,
+      "@Capabilities.Updatable": true,
+      "@Capabilities.Deletable": true,
       "@UI.LineItem": [
         {
           "$Type": "UI.DataField",
@@ -787,16 +855,38 @@
             "=": "unitPrice"
           },
           "Label": "Unit Price"
-        }
-      ],
-      "@Capabilities.Insertable": true,
-      "@Capabilities.Updatable": true,
-      "@Capabilities.Deletable": true,
-      "@UI.FieldGroup#General.$Type": "UI.FieldGroupType",
-      "@UI.FieldGroup#General.Data": [
+        },
         {
           "$Type": "UI.DataField",
-          "Label": "Name",
+          "Value": {
+            "=": "category_ID"
+          },
+          "Label": "Category"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "supplier_ID"
+          },
+          "Label": "Supplier"
+        }
+      ],
+      "@UI.SelectionFields": [
+        {
+          "=": "name"
+        },
+        {
+          "=": "category_ID"
+        },
+        {
+          "=": "supplier_ID"
+        }
+      ],
+      "@UI.FieldGroup#GeneratedGroup1.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#GeneratedGroup1.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Material Name",
           "Value": {
             "=": "name"
           }
@@ -840,9 +930,9 @@
       "@UI.Facets": [
         {
           "$Type": "UI.ReferenceFacet",
-          "ID": "GeneralInfo",
+          "ID": "GeneratedFacet1",
           "Label": "General Information",
-          "Target": "@UI.FieldGroup#General"
+          "Target": "@UI.FieldGroup#GeneratedGroup1"
         }
       ],
       "projection": {
@@ -911,6 +1001,7 @@
           "type": "cds.UUID"
         },
         "name": {
+          "@Common.Label": "Material Name",
           "type": "cds.String",
           "length": 100
         },
@@ -926,15 +1017,12 @@
           "precision": 10,
           "scale": 2
         },
-        "category": {
-          "@Common.ValueList.$Type": "Common.ValueListType",
+        "category_ID": {
           "@Common.ValueList.CollectionPath": "Categories",
           "@Common.ValueList.Parameters": [
             {
               "$Type": "Common.ValueListParameterInOut",
-              "LocalDataProperty": {
-                "=": "category_ID"
-              },
+              "LocalDataProperty": "category_ID",
               "ValueListProperty": "ID"
             },
             {
@@ -942,41 +1030,56 @@
               "ValueListProperty": "name"
             }
           ],
+          "@Common.Label": "Category",
+          "type": "cds.UUID"
+        },
+        "category": {
           "type": "cds.Association",
           "target": "MFlowService.Categories",
-          "keys": [
+          "on": [
             {
               "ref": [
+                "category_ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "category",
                 "ID"
               ]
             }
           ]
         },
-        "supplier": {
-          "@Common.ValueList.$Type": "Common.ValueListType",
+        "supplier_ID": {
           "@Common.ValueList.CollectionPath": "Suppliers",
           "@Common.ValueList.Parameters": [
             {
               "$Type": "Common.ValueListParameterInOut",
-              "LocalDataProperty": {
-                "=": "supplier_ID"
-              },
+              "LocalDataProperty": "supplier_ID",
               "ValueListProperty": "ID"
             },
             {
               "$Type": "Common.ValueListParameterDisplayOnly",
               "ValueListProperty": "name"
-            },
-            {
-              "$Type": "Common.ValueListParameterDisplayOnly",
-              "ValueListProperty": "contactEmail"
             }
           ],
+          "@Common.Label": "Supplier",
+          "type": "cds.UUID"
+        },
+        "supplier": {
           "type": "cds.Association",
           "target": "MFlowService.Suppliers",
-          "keys": [
+          "on": [
             {
               "ref": [
+                "supplier_ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "supplier",
                 "ID"
               ]
             }
@@ -995,23 +1098,28 @@
           "to": "MaterialFlow.Read"
         }
       ],
+      "@Capabilities.Insertable": true,
+      "@Capabilities.Updatable": true,
+      "@Capabilities.Deletable": true,
       "@UI.LineItem": [
         {
           "$Type": "UI.DataField",
-          "Label": "name",
+          "Label": "Category Name",
           "Value": {
             "=": "name"
           }
         }
       ],
-      "@Capabilities.Insertable": true,
-      "@Capabilities.Updatable": true,
-      "@Capabilities.Deletable": true,
+      "@UI.SelectionFields": [
+        {
+          "=": "name"
+        }
+      ],
       "@UI.FieldGroup#GeneratedGroup1.$Type": "UI.FieldGroupType",
       "@UI.FieldGroup#GeneratedGroup1.Data": [
         {
           "$Type": "UI.DataField",
-          "Label": "name",
+          "Label": "Name",
           "Value": {
             "=": "name"
           }
@@ -1091,6 +1199,7 @@
           "type": "cds.UUID"
         },
         "name": {
+          "@Common.Label": "Category Name",
           "type": "cds.String",
           "length": 50
         }
@@ -1107,37 +1216,45 @@
           "to": "MaterialFlow.Read"
         }
       ],
+      "@Capabilities.Insertable": true,
+      "@Capabilities.Updatable": true,
+      "@Capabilities.Deletable": true,
       "@UI.LineItem": [
         {
           "$Type": "UI.DataField",
-          "Label": "name",
+          "Label": "Supllier Name",
           "Value": {
             "=": "name"
           }
         },
         {
           "$Type": "UI.DataField",
-          "Label": "contactEmail",
+          "Label": "Contact Email",
           "Value": {
             "=": "contactEmail"
           }
         }
       ],
-      "@Capabilities.Insertable": true,
-      "@Capabilities.Updatable": true,
-      "@Capabilities.Deletable": true,
+      "@UI.SelectionFields": [
+        {
+          "=": "name"
+        },
+        {
+          "=": "contactEmail"
+        }
+      ],
       "@UI.FieldGroup#GeneratedGroup1.$Type": "UI.FieldGroupType",
       "@UI.FieldGroup#GeneratedGroup1.Data": [
         {
           "$Type": "UI.DataField",
-          "Label": "name",
+          "Label": "Supplier Name",
           "Value": {
             "=": "name"
           }
         },
         {
           "$Type": "UI.DataField",
-          "Label": "contactEmail",
+          "Label": "Contact Email",
           "Value": {
             "=": "contactEmail"
           }
@@ -1149,6 +1266,12 @@
           "ID": "GeneratedFacet1",
           "Label": "General Information",
           "Target": "@UI.FieldGroup#GeneratedGroup1"
+        }
+      ],
+      "@Common.SideEffects.$Type": "Common.SideEffectsType",
+      "@Common.SideEffects.SourceProperties": [
+        {
+          "=": "ID"
         }
       ],
       "projection": {
@@ -1217,10 +1340,12 @@
           "type": "cds.UUID"
         },
         "name": {
+          "@Common.Label": "Supplier Name",
           "type": "cds.String",
           "length": 100
         },
         "contactEmail": {
+          "@Common.Label": "Contact Email",
           "type": "cds.String"
         }
       }
@@ -1256,6 +1381,16 @@
           "Value": {
             "=": "totalAmount"
           }
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Action": "MFlowService.approveOrder",
+          "Label": "Approve Order"
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Action": "MFlowService.cancelOrder",
+          "Label": "Cancel Order"
         }
       ],
       "@UI.FieldGroup#GeneratedGroup1.$Type": "UI.FieldGroupType",
@@ -1303,13 +1438,23 @@
           "Target": "items/@UI.LineItem"
         }
       ],
+      "@Common.SideEffects#AfterApprove.SourceEntities": [],
+      "@Common.SideEffects#AfterApprove.TargetProperties": [
+        {
+          "=": "status"
+        }
+      ],
+      "@Common.SideEffects#AfterApprove.TriggerAction": "MFlowService.approveOrder",
       "projection": {
         "from": {
           "ref": [
             "PurchaseOrders"
           ],
           "as": "po"
-        }
+        },
+        "columns": [
+          "*"
+        ]
       },
       "elements": {
         "createdAt": {
@@ -1423,6 +1568,7 @@
           }
         },
         "totalAmount": {
+          "@readonly": true,
           "type": "cds.Decimal",
           "precision": 10,
           "scale": 2
@@ -1448,6 +1594,20 @@
             }
           ]
         }
+      },
+      "actions": {
+        "approveOrder": {
+          "kind": "action",
+          "returns": {
+            "type": "MFlowService.PurchaseOrder"
+          }
+        },
+        "cancelOrder": {
+          "kind": "action",
+          "returns": {
+            "type": "MFlowService.PurchaseOrder"
+          }
+        }
       }
     },
     "MFlowService.PurchaseOrderItem": {
@@ -1455,13 +1615,59 @@
       "@Capabilities.Insertable": true,
       "@Capabilities.Updatable": true,
       "@Capabilities.Deletable": true,
+      "@UI.FieldGroup#GeneratedGroup3.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#GeneratedGroup3.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Order Number",
+          "Value": {
+            "=": "orderNumber"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Material ID",
+          "Value": {
+            "=": "material_ID"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Quantity",
+          "Value": {
+            "=": "quantity"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Unit Price",
+          "Value": {
+            "=": "unitPrice"
+          }
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.ReferenceFacet",
+          "ID": "GeneratedFacet3",
+          "Label": "Order Items Information",
+          "Target": "@UI.FieldGroup#GeneratedGroup3"
+        }
+      ],
       "@UI.LineItem": [
         {
           "$Type": "UI.DataField",
-          "Label": "Material Name",
+          "Label": "Material ID",
+          "Value": {
+            "=": "material_ID"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
           "Value": {
             "=": "materialName"
-          }
+          },
+          "Label": "Material Name"
         },
         {
           "$Type": "UI.DataField",
@@ -1493,17 +1699,59 @@
           "as": "poi"
         },
         "columns": [
-          "*",
           {
             "ref": [
               "material",
               "name"
             ],
             "as": "materialName"
-          }
+          },
+          {
+            "ref": [
+              "material"
+            ]
+          },
+          "*"
         ]
       },
       "elements": {
+        "materialName": {
+          "@readonly": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "material": {
+          "@Common.ValueList.$Type": "Common.ValueListType",
+          "@Common.ValueList.CollectionPath": "Materials",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": "material_ID",
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "description"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "unitPrice"
+            }
+          ],
+          "type": "cds.Association",
+          "target": "MFlowService.Materials",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
         "createdAt": {
           "@cds.on.insert": {
             "=": "$now"
@@ -1583,84 +1831,73 @@
           "type": "cds.String",
           "length": 50
         },
-        "material": {
-          "type": "cds.Association",
-          "target": "MFlowService.Materials",
-          "keys": [
-            {
-              "ref": [
-                "ID"
-              ]
-            }
-          ]
-        },
         "quantity": {
           "type": "cds.Integer"
         },
         "unitPrice": {
+          "@readonly": true,
           "type": "cds.Decimal",
           "precision": 10,
           "scale": 2
         },
         "totalPrice": {
+          "@readonly": true,
           "type": "cds.Decimal",
           "precision": 10,
           "scale": 2
-        },
-        "materialName": {
-          "@Common.ValueList.$Type": "Common.ValueListType",
-          "@Common.ValueList.CollectionPath": "Materials",
-          "@Common.ValueList.Parameters": [
-            {
-              "$Type": "Common.ValueListParameterInOut",
-              "LocalDataProperty": {
-                "=": "materialName"
-              },
-              "ValueListProperty": "name"
-            },
-            {
-              "$Type": "Common.ValueListParameterDisplayOnly",
-              "ValueListProperty": "ID"
-            },
-            {
-              "$Type": "Common.ValueListParameterDisplayOnly",
-              "ValueListProperty": "description"
-            }
-          ],
-          "type": "cds.String",
-          "length": 100
         }
       }
     },
     "MFlowService.InventoryMovement": {
       "kind": "entity",
+      "@Capabilities.Deletable": false,
+      "@Capabilities.Updatable": false,
+      "@UI.SelectionFields": [
+        {
+          "=": "movementType"
+        }
+      ],
       "@UI.LineItem": [
         {
           "$Type": "UI.DataField",
-          "Label": "movementType",
+          "Label": "Movement Type",
           "Value": {
             "=": "movementType"
           }
         },
         {
           "$Type": "UI.DataField",
-          "Label": "quantity",
+          "Label": "Order Number",
+          "Value": {
+            "=": "orderNumber"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Material ID",
+          "Value": {
+            "=": "material_ID"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Material Name",
+          "Value": {
+            "=": "material.name"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Quantity",
           "Value": {
             "=": "quantity"
           }
         },
         {
           "$Type": "UI.DataField",
-          "Label": "referenceDoc",
+          "Label": "Movement Date",
           "Value": {
-            "=": "referenceDoc"
-          }
-        },
-        {
-          "$Type": "UI.DataField",
-          "Label": "notes",
-          "Value": {
-            "=": "notes"
+            "=": "movementDate"
           }
         }
       ],
@@ -1668,30 +1905,44 @@
       "@UI.FieldGroup#GeneratedGroup1.Data": [
         {
           "$Type": "UI.DataField",
-          "Label": "movementType",
+          "Label": "Order Number",
+          "Value": {
+            "=": "orderNumber"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Movement Date",
+          "Value": {
+            "=": "movementDate"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Material ID",
+          "Value": {
+            "=": "material_ID"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Material Name",
+          "Value": {
+            "=": "material.name"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Movement Type",
           "Value": {
             "=": "movementType"
           }
         },
         {
           "$Type": "UI.DataField",
-          "Label": "quantity",
+          "Label": "Quantity",
           "Value": {
             "=": "quantity"
-          }
-        },
-        {
-          "$Type": "UI.DataField",
-          "Label": "referenceDoc",
-          "Value": {
-            "=": "referenceDoc"
-          }
-        },
-        {
-          "$Type": "UI.DataField",
-          "Label": "notes",
-          "Value": {
-            "=": "notes"
           }
         }
       ],
@@ -1814,44 +2065,70 @@
           ],
           "type": "cds.Association",
           "target": "MFlowService.Materials",
-          "keys": [
+          "on": [
             {
               "ref": [
+                "material",
                 "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self",
+                "material_ID"
               ]
             }
           ]
         },
+        "material_ID": {
+          "type": "cds.UUID"
+        },
+        "purchaseOrder": {
+          "type": "cds.Association",
+          "target": "MFlowService.PurchaseOrder",
+          "on": [
+            {
+              "ref": [
+                "purchaseOrder",
+                "orderNumber"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self",
+                "orderNumber"
+              ]
+            }
+          ]
+        },
+        "orderNumber": {
+          "type": "cds.String",
+          "length": 50
+        },
         "movementType": {
+          "@Common.Label": "movementType",
           "type": "cds.String",
           "length": 20
         },
         "quantity": {
           "type": "cds.Integer"
         },
-        "referenceDoc": {
-          "type": "cds.String",
-          "length": 50
-        },
-        "notes": {
-          "type": "cds.String",
-          "length": 255
+        "movementDate": {
+          "type": "cds.DateTime"
         }
       }
     },
-    "MFlowService.adjustStock": {
+    "MFlowService.chatWithLlama": {
       "kind": "action",
-      "@requires": "MaterialFlow.Supervise",
       "params": {
-        "materialID": {
-          "type": "cds.UUID"
-        },
-        "adjustment": {
+        "message": {
           "type": "cds.String"
         }
       },
       "returns": {
-        "type": "MFlowService.Materials"
+        "type": "cds.String"
       }
     },
     "Language": {

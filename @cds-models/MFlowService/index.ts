@@ -23,8 +23,6 @@ export function _MaterialAspect<TBase extends new (...args: any[]) => object>(Ba
     declare category?: __.Association.to<Category> | null
     declare supplier_ID?: string | null
     declare supplier?: __.Association.to<Supplier> | null
-    declare categoryName?: string | null
-    declare supplierName?: string | null
     static readonly kind: 'entity' | 'type' | 'aspect' = 'entity';
     declare static readonly keys: __.KeysOf<Material>;
     declare static readonly elements: __.ElementsOf<Material>;
