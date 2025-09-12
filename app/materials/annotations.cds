@@ -2,6 +2,12 @@ using MFlowService as service from '../../srv/service';
 annotate Materials with @Capabilities : { Insertable : true, Updatable : true, Deletable : true 
 };
 annotate service.Materials with {
+    // Mostrar texto de la entidad relacionada en vez de GUID
+    category_ID @Common.Text: category.name;
+    category_ID @Common.TextArrangement: #TextOnly;
+    supplier_ID @Common.Text: supplier.name;
+    supplier_ID @Common.TextArrangement: #TextOnly;
+
     category_ID @Common.ValueList: {
         CollectionPath : 'Categories',
         Parameters : [
@@ -43,12 +49,12 @@ annotate service.Materials with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : category_ID,
+            Value : category.name,
             Label : 'Category',
         },
         {
             $Type : 'UI.DataField',
-            Value : supplier_ID,
+            Value : supplier.name,
             Label : 'Supplier',
         },
         

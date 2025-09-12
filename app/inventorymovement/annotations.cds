@@ -23,11 +23,6 @@ annotate service.InventoryMovement with @(
         },
         {
             $Type : 'UI.DataField',
-            Label : 'Material ID',
-            Value : material_ID,
-        },
-        {
-            $Type : 'UI.DataField',
             Label : 'Material Name',
             Value : material.name
         },

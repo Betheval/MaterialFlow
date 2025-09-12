@@ -153,8 +153,10 @@ sap.ui.define(
       },
       onCopilotPressed: function () {
         var oModel = this.getView().getModel("chatModel");
-        var bVisible = oModel.getProperty("/showChatbot");
-        oModel.setProperty("/showChatbot", !bVisible);
+        var bVisible = oModel && oModel.getProperty && oModel.getProperty("/showChatbot");
+        if (oModel && oModel.setProperty) {
+          oModel.setProperty("/showChatbot", !bVisible);
+        }
       },
     });
   }

@@ -1,11 +1,14 @@
+using MFlowService as service from '../../srv/service';
+
 annotate service.Suppliers with @(
     Common.SideEffects: {
-        $Type: 'Common.SideEffectsType',
-        SourceProperties: ['ID'], // o el campo clave real
-        TargetProperties: ['name', 'contactEmail']
+        $Type : 'Common.SideEffectsType',
+        // Propiedades cuya modificación puede requerir releer otras
+        SourceProperties : [ ID ],
+        // Propiedades objetivo que deben refrescarse en UI
+        TargetProperties : [ name, contactEmail ]
     }
 );
-using MFlowService as service from '../../srv/service';
 
 annotate service.Suppliers with @(
     UI.LineItem : [

@@ -54,6 +54,18 @@
         "sap.fe.templates": {}
       }
     },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "suppliers.ext.SuppListReportExt"
+          },
+          "sap.fe.templates.ObjectPage.ObjectPageController": {
+            "controllerName": "suppliers.ext.ObjectPageExt"
+          }
+        }
+      }
+    },
     "contentDensities": {
       "compact": true,
       "cozy": true
@@ -136,6 +148,7 @@
       }
     }
   },
+  
   "sap.fiori": {
     "registrationIds": [],
     "archeType": "transactional"

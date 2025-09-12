@@ -811,19 +811,6 @@
           "to": "MaterialFlow.Read"
         }
       ],
-      "@Common.SideEffects.$Type": "Common.SideEffectsType",
-      "@Common.SideEffects.SourceProperties": [
-        {
-          "=": "supplier_ID"
-        },
-        {
-          "=": "category_ID"
-        }
-      ],
-      "@Common.SideEffects.TargetProperties": [
-        "supplierName",
-        "categoryName"
-      ],
       "@Capabilities.Insertable": true,
       "@Capabilities.Updatable": true,
       "@Capabilities.Deletable": true,
@@ -859,14 +846,14 @@
         {
           "$Type": "UI.DataField",
           "Value": {
-            "=": "category_ID"
+            "=": "category.name"
           },
           "Label": "Category"
         },
         {
           "$Type": "UI.DataField",
           "Value": {
-            "=": "supplier_ID"
+            "=": "supplier.name"
           },
           "Label": "Supplier"
         }
@@ -1018,6 +1005,12 @@
           "scale": 2
         },
         "category_ID": {
+          "@Common.Text": {
+            "=": "category.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
           "@Common.ValueList.CollectionPath": "Categories",
           "@Common.ValueList.Parameters": [
             {
@@ -1052,6 +1045,12 @@
           ]
         },
         "supplier_ID": {
+          "@Common.Text": {
+            "=": "supplier.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
           "@Common.ValueList.CollectionPath": "Suppliers",
           "@Common.ValueList.Parameters": [
             {
@@ -1219,6 +1218,20 @@
       "@Capabilities.Insertable": true,
       "@Capabilities.Updatable": true,
       "@Capabilities.Deletable": true,
+      "@Common.SideEffects.$Type": "Common.SideEffectsType",
+      "@Common.SideEffects.SourceProperties": [
+        {
+          "=": "ID"
+        }
+      ],
+      "@Common.SideEffects.TargetProperties": [
+        {
+          "=": "name"
+        },
+        {
+          "=": "contactEmail"
+        }
+      ],
       "@UI.LineItem": [
         {
           "$Type": "UI.DataField",
@@ -1266,12 +1279,6 @@
           "ID": "GeneratedFacet1",
           "Label": "General Information",
           "Target": "@UI.FieldGroup#GeneratedGroup1"
-        }
-      ],
-      "@Common.SideEffects.$Type": "Common.SideEffectsType",
-      "@Common.SideEffects.SourceProperties": [
-        {
-          "=": "ID"
         }
       ],
       "projection": {

@@ -54,6 +54,18 @@
         "sap.fe.templates": {}
       }
     },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "purchaseorder.ext.ListReportExt"
+          },
+          "sap.fe.templates.ObjectPage.ObjectPageController": {
+            "controllerName": "purchaseorder.ext.ObjectPageExt"
+          }
+        }
+      }
+    },
     "contentDensities": {
       "compact": true,
       "cozy": true

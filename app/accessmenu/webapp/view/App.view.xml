@@ -39,6 +39,9 @@
 			<l:Splitter id="mainSplitter" height="100%">
 
 			<NavContainer id="pageContainer" initialPage="page1" height="100%" width="100%">
+				<layoutData>
+					<l:SplitterLayoutData size="{= ${chatModel>/showChatbot} ? '70%' : '100%'}"/>
+				</layoutData>
 				<pages>
 					<ScrollContainer id="page1" horizontal="false" vertical="true" height="100%">
 						<core:ComponentContainer id="pageMaterials" name="materials" async="true" manifest="true" component="materials" height="900px" width="100%"></core:ComponentContainer>
@@ -58,12 +61,16 @@
 				</pages>
 			</NavContainer>
 			<Panel id="chatbotPanel"
+				visible="{chatModel>/showChatbot}"
 				width="95%"
 				expandable="true"
 				expanded="true"
 				headerText="Virtual Assistant"
 				height="100%"
 				class="chatbotPanel sapUiSmallMarginBegin sapUiNoContentPadding">
+					<layoutData>
+						<l:SplitterLayoutData size="{= ${chatModel>/showChatbot} ? '30%' : '0%'}" resizable="{= ${chatModel>/showChatbot} }"/>
+					</layoutData>
 					<FlexBox id="_IDGenFlexBox" direction="Column" height="100%" class="chatbotVBox">
 						<List id="chatList"
 							items="{chatModel>/chat}"

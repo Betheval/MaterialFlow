@@ -277,22 +277,6 @@
         <ReturnType Type="Edm.String"/>
       </Action>
       <Annotations Target="MFlowService.Materials">
-        <Annotation Term="Common.SideEffects">
-          <Record Type="Common.SideEffectsType">
-            <PropertyValue Property="SourceProperties">
-              <Collection>
-                <PropertyPath>supplier_ID</PropertyPath>
-                <PropertyPath>category_ID</PropertyPath>
-              </Collection>
-            </PropertyValue>
-            <PropertyValue Property="TargetProperties">
-              <Collection>
-                <String>supplierName</String>
-                <String>categoryName</String>
-              </Collection>
-            </PropertyValue>
-          </Record>
-        </Annotation>
         <Annotation Term="UI.LineItem">
           <Collection>
             <Record Type="UI.DataField">
@@ -312,11 +296,11 @@
               <PropertyValue Property="Label" String="Unit Price"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" Path="category_ID"/>
+              <PropertyValue Property="Value" Path="category/name"/>
               <PropertyValue Property="Label" String="Category"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Value" Path="supplier_ID"/>
+              <PropertyValue Property="Value" Path="supplier/name"/>
               <PropertyValue Property="Label" String="Supplier"/>
             </Record>
           </Collection>
@@ -371,22 +355,6 @@
         </Annotation>
       </Annotations>
       <Annotations Target="MFlowService.EntityContainer/Materials">
-        <Annotation Term="Common.SideEffects">
-          <Record Type="Common.SideEffectsType">
-            <PropertyValue Property="SourceProperties">
-              <Collection>
-                <PropertyPath>supplier_ID</PropertyPath>
-                <PropertyPath>category_ID</PropertyPath>
-              </Collection>
-            </PropertyValue>
-            <PropertyValue Property="TargetProperties">
-              <Collection>
-                <String>supplierName</String>
-                <String>categoryName</String>
-              </Collection>
-            </PropertyValue>
-          </Record>
-        </Annotation>
         <Annotation Term="Common.DraftRoot">
           <Record Type="Common.DraftRootType">
             <PropertyValue Property="ActivationAction" String="MFlowService.draftActivate"/>
@@ -445,6 +413,9 @@
         <Annotation Term="Common.Label" String="Material Name"/>
       </Annotations>
       <Annotations Target="MFlowService.Materials/category_ID">
+        <Annotation Term="Common.Text" Path="category/name">
+          <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+        </Annotation>
         <Annotation Term="Common.ValueList">
           <Record Type="Common.ValueListType">
             <PropertyValue Property="CollectionPath" String="Categories"/>
@@ -464,6 +435,9 @@
         <Annotation Term="Common.Label" String="Category"/>
       </Annotations>
       <Annotations Target="MFlowService.Materials/supplier_ID">
+        <Annotation Term="Common.Text" Path="supplier/name">
+          <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+        </Annotation>
         <Annotation Term="Common.ValueList">
           <Record Type="Common.ValueListType">
             <PropertyValue Property="CollectionPath" String="Suppliers"/>
@@ -601,6 +575,21 @@
         <Annotation Term="UI.Hidden" Bool="true"/>
       </Annotations>
       <Annotations Target="MFlowService.Suppliers">
+        <Annotation Term="Common.SideEffects">
+          <Record Type="Common.SideEffectsType">
+            <PropertyValue Property="SourceProperties">
+              <Collection>
+                <PropertyPath>ID</PropertyPath>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="TargetProperties">
+              <Collection>
+                <Path>name</Path>
+                <Path>contactEmail</Path>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
         <Annotation Term="UI.LineItem">
           <Collection>
             <Record Type="UI.DataField">
@@ -644,15 +633,6 @@
             </Record>
           </Collection>
         </Annotation>
-        <Annotation Term="Common.SideEffects">
-          <Record Type="Common.SideEffectsType">
-            <PropertyValue Property="SourceProperties">
-              <Collection>
-                <PropertyPath>ID</PropertyPath>
-              </Collection>
-            </PropertyValue>
-          </Record>
-        </Annotation>
       </Annotations>
       <Annotations Target="MFlowService.EntityContainer/Suppliers">
         <Annotation Term="Common.SideEffects">
@@ -660,6 +640,12 @@
             <PropertyValue Property="SourceProperties">
               <Collection>
                 <PropertyPath>ID</PropertyPath>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="TargetProperties">
+              <Collection>
+                <Path>name</Path>
+                <Path>contactEmail</Path>
               </Collection>
             </PropertyValue>
           </Record>

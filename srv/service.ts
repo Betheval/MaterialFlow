@@ -117,4 +117,22 @@ module.exports = cds.service.impl((srv: any) => {
     const PO = new POrder(req);
     await PO.calcularPurchaseOrderTotal();
   });
+
+  // Swallow 404 for draft CANCEL (DELETE on IsActiveEntity=false) to avoid FE errors
+  const swallowDraftCancel404 = (entityName: string) => {
+    srv.on('DELETE', entityName, async (req: any, next: any) => {
+      try {
+        return await next();
+      } catch (e: any) {
+        const isDraftDelete = req?.data?.IsActiveEntity === false;
+        if (isDraftDelete && (String(e?.code) === '404' || String(e?.statusCode) === '404')) {
+          return {};
+        }
+        throw e;
+      }
+    });
+  };
+
+  swallowDraftCancel404('Suppliers');
+  swallowDraftCancel404('Categories');
 });

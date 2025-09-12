@@ -51,21 +51,6 @@ service MFlowService @(requires: 'authenticated-user') {
     action chatWithLlama(message : String) returns String;
 
 }
-
-
-annotate MFlowService.Materials with @(
-    Common.SideEffects: {
-        $Type : 'Common.SideEffectsType',
-        SourceProperties : [
-            supplier_ID,category_ID
-        ],
-        TargetProperties : [
-            'supplierName','categoryName'
-        ],
-    },
-);
-
-
 annotate MFlowService.Materials with @(
     Capabilities.Insertable: true,
     Capabilities.Updatable : true,
