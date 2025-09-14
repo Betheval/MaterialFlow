@@ -1,9 +1,13 @@
 # MaterialFlow
 
-MaterialFlow is a basic application developed with SAP CAP and Fiori Elements for managing materials, purchase orders, categories, suppliers, and inventory movements.
+MaterialFlow is a basic application developed with **SAP CAP** and **Fiori Elements** for managing materials, purchase orders, categories, suppliers, and inventory movements.  
+The ecosystem is now extended with **MaterialFlowAgent**, a Python-based agent designed to interact with the CAP backend and enable new levels of automation, integrations, and AI-powered assistance.
 
-## Features
+---
 
+## 📦 Features
+
+### MaterialFlow (SAP CAP + Fiori)
 - **Material Management:** Create, update, delete, and view materials.
 - **Purchase Orders:** Create, edit, approve, and view orders and their items.
 - **Suppliers & Categories:** Manage related catalogs.
@@ -11,10 +15,20 @@ MaterialFlow is a basic application developed with SAP CAP and Fiori Elements fo
 - **Virtual Assistant:** Integrated chatbot for contextual help.
 - **Fiori Elements Applications** for each main entity.
 
-## Project Structure
+### MaterialFlowAgent (Python)
+- **Backend Bridge:** Connects to MaterialFlow CAP OData services.
+- **Automation:** Perform background tasks such as stock checks, data imports, or scheduled actions.
+- **Integrations:** Future-ready for RabbitMQ, SAP Event Mesh, or other external systems.
+- **AI/LLM Ready:** Can integrate with local or cloud LLMs to provide contextual insights and decision support.
+- **Extensible:** Simple modular design in Python, easily adaptable to new requirements.
 
+---
+
+## 📂 Project Structure
+
+### MaterialFlow (CAP Project)
 ```
-.
+materialflow/
 ├── app/                # Fiori applications (UI)
 │   ├── accessmenu/
 │   ├── categories/
@@ -37,8 +51,19 @@ MaterialFlow is a basic application developed with SAP CAP and Fiori Elements fo
 └── README.md
 ```
 
-## Installation
+### MaterialFlowAgent (Python Project)
+```
+materialflow-agent/
+├── main.py          # Main script
+├── .gitignore       # Ignored files (IDE, cache, etc.)
+└── README.md        # Documentation for the agent
+```
 
+---
+
+## ⚙️ Installation
+
+### MaterialFlow
 1. **Prerequisites:**
    - Node.js LTS (recommended v16+)
    - npm
@@ -54,39 +79,86 @@ MaterialFlow is a basic application developed with SAP CAP and Fiori Elements fo
    cds deploy --to sqlite:db.sqlite
    ```
 
-## Running the Application
+### MaterialFlowAgent
+1. **Prerequisites:**
+   - Python 3.9+
+   - `pip` package manager
 
-1. **Start the CAP backend:**
+2. **Install dependencies:**
+   (when `requirements.txt` is available)
    ```sh
-   cds watch
-   ```
-   or
-   ```sh
-   npm start
+   pip install -r requirements.txt
    ```
 
-2. **Access the Fiori applications:**
-   - [Materials](http://localhost:4004/materials/webapp/index.html)
-   - [Purchase Orders](http://localhost:4004/purchaseorder/webapp/index.html)
-   - [Suppliers](http://localhost:4004/suppliers/webapp/index.html)
-   - [Categories](http://localhost:4004/categories/webapp/index.html)
-   - [Inventory Movements](http://localhost:4004/inventorymovement/webapp/index.html)
-   - [Main Menu](http://localhost:4004/accessmenu/webapp/index.html)
+---
 
-## API
+## ▶️ Running the Applications
 
-The backend exposes OData endpoints and several custom actions for operations such as adjusting stock, approving orders, changing suppliers, etc.  
-See the **API** section in this README for usage examples.
+### Start the CAP Backend
+```sh
+cd materialflow
+cds watch
+```
+or
+```sh
+npm start
+```
 
-## Docker Deployment
+### Start the Python Agent
+```sh
+cd materialflow-agent
+python main.py
+```
 
-You can run the application in a Docker container:
+---
+
+## 🌐 Access the Fiori Applications
+
+- [Materials](http://localhost:4004/materials/webapp/index.html)  
+- [Purchase Orders](http://localhost:4004/purchaseorder/webapp/index.html)  
+- [Suppliers](http://localhost:4004/suppliers/webapp/index.html)  
+- [Categories](http://localhost:4004/categories/webapp/index.html)  
+- [Inventory Movements](http://localhost:4004/inventorymovement/webapp/index.html)  
+- [Main Menu](http://localhost:4004/accessmenu/webapp/index.html)  
+
+---
+
+## 🔮 Roadmap
+
+- **MaterialFlow**
+  - Extend with additional business processes.
+  - Enhance analytics and reporting.
+  - Deploy to SAP BTP (Cloud Foundry or Kyma).  
+
+- **MaterialFlowAgent**
+  - Connect to MaterialFlow CAP OData endpoints.
+  - Add support for RabbitMQ / Event Mesh.
+  - Integrate with local LLMs (Ollama, LLaMA) for decision-making.
+  - Implement scheduling and background jobs.
+  - Unit & integration tests.  
+
+---
+
+## 🐳 Docker Deployment
+
+You can run the **MaterialFlow CAP backend** in Docker:
 
 ```sh
 docker build -t materialflow .
 docker run -p 4004:4004 materialflow
 ```
 
-## Contributions
+(Planned: Docker setup for **MaterialFlowAgent**.)
 
-Contributions are welcome! Open an issue or pull request for suggestions or improvements.
+---
+
+## 🤝 Contributions
+
+Contributions are welcome!  
+Fork the repository, create a feature branch, and open a **Pull Request**.
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
